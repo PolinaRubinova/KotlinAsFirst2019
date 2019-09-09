@@ -3,6 +3,8 @@
 package lesson3.task1
 
 import kotlin.math.sqrt
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Пример
@@ -83,7 +85,17 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var x: Int = 0
+    var y: Int = 1
+    var q: Int
+    for (i in 2..n) {
+        q = y
+        y += x
+        x = q
+    }
+    return y
+}
 
 /**
  * Простая
@@ -91,27 +103,54 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var x: Int = m
+    var y: Int = n
+    val p: Int = m * n
+    while (x != y) {
+        if (x > y) x -= y
+        else y -= x
+    }
+    return p / x
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    if (isPrime(n)) return n
+    else {
+        var count: Int = 2
+        while (n % count != 0) {
+            count++
+        }
+        return count
+    }
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    if (isPrime(n)) return 1
+    else {
+        var count: Int = n - 1
+        while (n % count != 0) {
+            count--
+        }
+        return count
+    }
+}
 
 /**
  * Простая
  *
- * Определить, являются ли два заданных числа m и n взаимно простыми.
- * Взаимно простые числа не имеют общих делителей, кроме 1.
+*Определить, являются ли два заданных числа m и n взаимно простыми
+ * * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean = TODO()
@@ -121,7 +160,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  *
  * Для заданных чисел m и n, m <= n, определить, имеется ли хотя бы один точный квадрат между m и n,
  * то есть, существует ли такое целое k, что m <= k*k <= n.
- * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
+*Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
 
@@ -129,7 +168,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Средняя
  *
  * Гипотеза Коллатца. Рекуррентная последовательность чисел задана следующим образом:
- *
+ * *
  *   ЕСЛИ (X четное)
  *     Xслед = X /2
  *   ИНАЧЕ
@@ -214,5 +253,5 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  *
  * Использовать операции со строками в этой задаче запрещается.
- */
+ * */
 fun fibSequenceDigit(n: Int): Int = TODO()
