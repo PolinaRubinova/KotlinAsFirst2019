@@ -215,8 +215,7 @@ fun revert(n: Int): Int {
     var x: Int = n
     var y: Int = 0
     while (x != 0){
-        y *= 10
-        y += x % 10
+        y = y * 10 + x % 10
         x /= 10
     }
     return y
@@ -231,7 +230,15 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var x: Int = n
+    var y: Int = 0
+    while (x != 0){
+        y = y * 10 + x % 10
+        x /= 10
+    }
+    return (n == y)
+}
 
 /**
  * Средняя
