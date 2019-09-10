@@ -180,7 +180,16 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var y: Int = x
+    var count: Int = 0
+    while (y != 1) {
+        if (y % 2 == 0) y /= 2
+        else y = y * 3 + 1
+        count++
+    }
+    return count
+}
 
 /**
  * Средняя
@@ -214,7 +223,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
 fun revert(n: Int): Int {
     var x: Int = n
     var y: Int = 0
-    while (x != 0){
+    while (x != 0) {
         y = y * 10 + x % 10
         x /= 10
     }
@@ -233,7 +242,7 @@ fun revert(n: Int): Int {
 fun isPalindrome(n: Int): Boolean {
     var x: Int = n
     var y: Int = 0
-    while (x != 0){
+    while (x != 0) {
         y = y * 10 + x % 10
         x /= 10
     }
@@ -249,7 +258,6 @@ fun isPalindrome(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun hasDifferentDigits(n: Int): Boolean = TODO()
-
 /**
  * Сложная
  *
