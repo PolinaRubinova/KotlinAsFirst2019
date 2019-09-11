@@ -71,7 +71,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var count = 0
-    var m: Int = n
+    var m = n
     do {
         m /= 10
         count++
@@ -104,9 +104,9 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var x: Int = m
-    var y: Int = n
-    val p: Int = m * n
+    var x = m
+    var y = n
+    val p = m * n
     while (x != y) {
         if (x > y) x -= y
         else y -= x
@@ -121,10 +121,11 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     if (isPrime(n)) return n
+    if (n % 2 == 0) return 2
     else {
-        var count = 2
+        var count = 3
         while (n % count != 0) {
-            count++
+            count += 2
         }
         return count
     }
@@ -137,10 +138,11 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     if (isPrime(n)) return 1
+    if (n % 2 == 0) return n / 2
     else {
-        var count: Int = n - 1
+        var count = n - 2
         while (n % count != 0) {
-            count--
+            count -= 2
         }
         return count
     }
@@ -153,7 +155,16 @@ fun maxDivisor(n: Int): Int {
  * * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var q = true
+    for (i in 2..min(m, n)) {
+        if ((m % i == 0) && (n % i == 0)) {
+            q = false
+            break
+        }
+    }
+    return q
+}
 
 /**
  * Простая
@@ -182,7 +193,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  */
 fun collatzSteps(x: Int): Int {
     var y: Int = x
-    var count: Int = 0
+    var count = 0
     while (y != 1) {
         if (y % 2 == 0) y /= 2
         else y = y * 3 + 1
@@ -221,8 +232,8 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun revert(n: Int): Int {
-    var x: Int = n
-    var y: Int = 0
+    var x = n
+    var y = 0
     while (x != 0) {
         y = y * 10 + x % 10
         x /= 10
@@ -240,8 +251,8 @@ fun revert(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun isPalindrome(n: Int): Boolean {
-    var x: Int = n
-    var y: Int = 0
+    var x = n
+    var y = 0
     while (x != 0) {
         y = y * 10 + x % 10
         x /= 10

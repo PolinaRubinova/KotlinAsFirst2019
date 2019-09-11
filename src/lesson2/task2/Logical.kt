@@ -40,14 +40,15 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int {
-    if (month == 2) {
-        if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)) return 29
-        else return 28
-    }
-    if (month == 4 || month == 6 || month == 9 || month == 11) return 30
-    else return 31
-}
+fun daysInMonth(month: Int, year: Int): Int = TODO()
+//when (month) {
+//4, 6, 9, 11 -> 30
+//2 -> {
+//if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)) -> 28
+//else -> 29
+//}
+//else -> 31
+//}
 
 /**
  * Средняя
@@ -70,7 +71,7 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when{
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
     (a <= r && b <= s) || (a <= s && b <= r) -> true
     (b <= r && c <= s) || (b <= s && c <= r) -> true
     (a <= r && c <= s) || (a <= s && c <= r) -> true
