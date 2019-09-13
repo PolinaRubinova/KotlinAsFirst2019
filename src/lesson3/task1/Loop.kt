@@ -8,6 +8,7 @@ import kotlin.math.min
 import kotlin.math.abs
 import kotlin.math.pow
 import lesson1.task1.sqr
+import java.util.*
 
 /**
  * Пример
@@ -176,7 +177,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  *Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean {
+fun squareBetweenExists(m: Int, n: Int): Boolean { //ДОДЕЛАТЬ
     var q = false
     for (i in min(m, n)..max(m, n)) {
         if (!isPrime(i)) {
@@ -228,7 +229,7 @@ fun collatzSteps(x: Int): Int {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {  //ДОДЕЛАТЬ
-    var i = 1
+    var i = 3
     var j = -1
     var ans = x
     while (abs(x.pow(i) / factorial(i)) >= eps) {
@@ -309,18 +310,19 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int { //ДОДЕЛАТЬ
+fun squareSequenceDigit(n: Int): Int {
     var numbers = 0
-    var count = 0
+    var sum = 0
     var i = 1
     var x: Int
-    while (count < n) {
+    while (sum < n) {
         x = digitNumber(sqr(i))
         numbers = numbers * 10.0.pow(x).toInt() + sqr(i)
+        sum += x
         i++
-        count += x
+        numbers %= 10.0.pow(x).toInt()
     }
-    return (numbers / 10.0.pow(count - n) % 10).toInt()
+    return (numbers / 10.0.pow(sum - n).toInt()) % 10
 }
 
 /**
@@ -332,4 +334,17 @@ fun squareSequenceDigit(n: Int): Int { //ДОДЕЛАТЬ
  *
  * Использовать операции со строками в этой задаче запрещается.
  * */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var numbers = 0
+    var sum = 0
+    var i = 1
+    var x: Int
+    while (sum < n) {
+        x = digitNumber(fib(i))
+        numbers = numbers * 10.0.pow(x).toInt() + fib(i)
+        sum += x
+        i++
+        numbers %= 10.0.pow(x).toInt()
+    }
+    return numbers / 10.0.pow(sum - n).toInt() % 10
+}
