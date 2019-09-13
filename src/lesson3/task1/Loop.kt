@@ -177,16 +177,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  *Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean { //ДОДЕЛАТЬ
+fun squareBetweenExists(m: Int, n: Int): Boolean {
     var q = false
     for (i in min(m, n)..max(m, n)) {
-        if (!isPrime(i)) {
-            for (j in 1..i) {
-                if (sqr(j) == i) {
-                    q = true
-                    break
-                }
-            }
+        if (sqrt(i.toDouble()) % 1.0 == 0.0) {
+            q = true
+            break
         }
     }
     return q
@@ -291,7 +287,7 @@ fun isPalindrome(n: Int): Boolean = (n == revert(n))
 fun hasDifferentDigits(n: Int): Boolean {
     var q = false
     var m = n
-    while ((m / 10) % 10 != 0) {
+    while (m / 10 != 0) {
         if ((m / 10) % 10 != m % 10) {
             q = true
             break
@@ -334,7 +330,7 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  * */
-fun fibSequenceDigit(n: Int): Int {
+fun fibSequenceDigit(n: Int): Int { //ДОДЕЛАТЬ
     var numbers = 0
     var sum = 0
     var i = 1
