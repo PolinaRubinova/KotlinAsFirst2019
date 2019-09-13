@@ -330,7 +330,7 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  * */
-fun fibSequenceDigit(n: Int): Int { //ДОДЕЛАТЬ
+fun fibSequenceDigit(n: Int): Int {
     var numbers = 0
     var sum = 0
     var i = 1
