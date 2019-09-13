@@ -316,7 +316,7 @@ fun squareSequenceDigit(n: Int): Int {
         numbers = numbers * 10.0.pow(x).toInt() + sqr(i)
         sum += x
         i++
-        if (digitNumber(numbers) > digitNumber(x)) numbers %= 10.0.pow(x).toInt()
+        if (digitNumber(numbers) > x) numbers %= 10.0.pow(x).toInt()
     }
     return (numbers / 10.0.pow(sum - n).toInt()) % 10
 }
@@ -340,7 +340,7 @@ fun fibSequenceDigit(n: Int): Int { //ДОДЕЛАТЬ
         numbers = numbers * 10.0.pow(x).toInt() + fib(i)
         sum += x
         i++
-        if (digitNumber(numbers) > digitNumber(x)) numbers %= 10.0.pow(x).toInt()
+        if (digitNumber(numbers) > x) numbers %= 10.0.pow(x).toInt()
     }
     return numbers / 10.0.pow(sum - n).toInt() % 10
 }
