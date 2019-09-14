@@ -162,6 +162,6 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = when {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     val s = min(b, d) - max(a, c)
-    if (s >= 0) return s
-    else return -1
+    return if (s >= 0) s
+    else -1
 }

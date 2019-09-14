@@ -125,7 +125,7 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     if (isPrime(n)) return n
-    if (n % 2 == 0) return 2
+    return if (n % 2 == 0) 2
     else {
         var count = 3
         while (n % count != 0) {
@@ -142,7 +142,7 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     if (isPrime(n)) return 1
-    if (n % 2 == 0) return n / 2
+    return if (n % 2 == 0) n / 2
     else {
         var count = n - 2
         while (n % count != 0) {
