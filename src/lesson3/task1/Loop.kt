@@ -225,9 +225,9 @@ fun collatzSteps(x: Int): Int {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {  //ДОДЕЛАТЬ
-    var i = 3
-    var j = -1
-    var ans = x
+    var i = 1
+    var j = 1
+    var ans = 0.0
     while (abs(x.pow(i) / factorial(i)) >= eps) {
         ans += abs(x.pow(i) / factorial(i)) * j
         j *= -1
@@ -306,7 +306,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
+fun squareSequenceDigit(n: Int): Int { //ДОДЕЛАТЬ
     var numbers = 0
     var sum = 0
     var i = 1
@@ -330,7 +330,7 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  * */
-fun fibSequenceDigit(n: Int): Int {
+fun fibSequenceDigit(n: Int): Int { //ДОДЕЛАТЬ
     var numbers = 0
     var sum = 0
     var i = 1
