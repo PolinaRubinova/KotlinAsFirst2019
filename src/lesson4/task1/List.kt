@@ -5,6 +5,7 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import lesson3.task1.isPrime
 import kotlin.math.sqrt
+import kotlin.math.pow
 
 /**
  * Пример
@@ -116,7 +117,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double = sqrt(v.map { it * it }.sum())
 
 /**
  * Простая
@@ -138,7 +139,13 @@ fun mean(list: List<Double>): Double {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val mean = mean(list)
+    for (i in 0 until list.size) {
+        list[i] -= mean
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -147,7 +154,13 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var ans = 0
+    for (i in 0 until a.size) {
+        ans += a[i] * b[i]
+    }
+    return ans
+}
 
 /**
  * Средняя
@@ -157,7 +170,13 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var ans = 0
+    for (i in 0 until p.size) {
+        ans += p[i] * x.toDouble().pow(i).toInt()
+    }
+    return ans
+}
 
 /**
  * Средняя
@@ -170,8 +189,10 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    for (i in 1 until list.size) {
-        list[i] += list[i - 1]
+    if (list.isNotEmpty()) {
+        for (i in 1 until list.size) {
+            list[i] += list[i - 1]
+        }
     }
     return list
 }
