@@ -243,7 +243,7 @@ fun convert(n: Int, base: Int): List<Int> {
         result.add(0, m % base)
         m /= base
     }
-    if (m != 0) result.add(0, m % base)
+    if (m % 10 != 0 || result.isEmpty()) result.add(0, m % base)
     return result
 }
 
