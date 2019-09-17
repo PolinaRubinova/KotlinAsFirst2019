@@ -236,7 +236,16 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    var m = n
+    while (m / base != 0) {
+        result.add(0, m % base)
+        m /= base
+    }
+    if (m != 0) result.add(0, m % base)
+    return result
+}
 
 /**
  * Сложная
@@ -249,7 +258,17 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val list = convert(n, base)
+    var answer = ""
+    val abc = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+        'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    for (i in 0 until list.size) {
+        if (list[i] >= 10) answer += abc[list[i] - 10]
+        else answer += list[i]
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -258,7 +277,13 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var result = 0
+    for (i in 0 until digits.size) {
+        result += digits[i] * base.toDouble().pow(digits.size - i - 1).toInt()
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -273,6 +298,19 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * (например, str.toInt(base)), запрещается.
  */
 fun decimalFromString(str: String, base: Int): Int = TODO()
+//val abc = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+//        'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+//  val num = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10, "11", "12", ...)
+// val answer = mutableListOf<Int>()
+// for (i in 0 until str.length) {
+//if (abc.indexOf(str[i]) == -1) {
+//        answer.add(i, num.indexOf(str[i]))
+//  } else {
+//    answer.add(i, abc.indexOf(str[i]))
+// }
+// }
+// return decimal(answer, base)
+//}
 
 /**
  * Сложная
