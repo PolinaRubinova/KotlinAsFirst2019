@@ -74,7 +74,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int = when {
-    n < 10 -> 1
+    abs(n) < 10 -> 1
     else -> digitNumber(n / 10) + digitNumber(n % 10)
 }
 
