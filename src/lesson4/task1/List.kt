@@ -314,7 +314,60 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var m = n
+    var result = String()
+    if (m / 1000 != 0) {
+        for (i in 1..m / 1000) result += "M"
+        m %= 1000
+    }
+    if (m / 900 != 0) {
+        for (i in 1..m / 900) result += "CM"
+        m %= 900
+    }
+    if (m / 500 != 0) {
+        for (i in 1..m / 500) result += "D"
+        m %= 500
+    }
+    if (m / 400 != 0) {
+        for (i in 1..m / 400) result += "CD"
+        m %= 400
+    }
+    if (m / 100 != 0) {
+        for (i in 1..m / 100) result += "C"
+        m %= 100
+    }
+    if (m / 90 != 0) {
+        for (i in 1..m / 90) result += "XC"
+        m %= 90
+    }
+    if (m / 50 != 0) {
+        for (i in 1..m / 50) result += "L"
+        m %= 50
+    }
+    if (m / 40 != 0) {
+        for (i in 1..m / 40) result += "XL"
+        m %= 40
+    }
+    if (m / 10 != 0) {
+        for (i in 1..m / 10) result += "X"
+        m %= 10
+    }
+    if (m / 9 != 0) {
+        for (i in 1..m / 9) result += "IX"
+        m %= 9
+    }
+    if (m / 5 != 0) {
+        for (i in 1..m / 5) result += "V"
+        m %= 5
+    }
+    if (m / 4 != 0) {
+        for (i in 1..m / 4) result += "IV"
+        m %= 4
+    }
+    if (m / 1 != 0) for (i in 1..m / 1) result += "I"
+    return result
+}
 
 /**
  * Очень сложная
