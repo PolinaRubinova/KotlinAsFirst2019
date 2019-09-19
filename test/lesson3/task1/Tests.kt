@@ -228,7 +228,7 @@ class Tests {
     @Test
     @Tag("Hard")
     fun squareSequenceDigit() {
-        assertEquals(1, squareSequenceDigit(1)) //4;1630 ERROR
+        assertEquals(0, squareSequenceDigit(658)) //1;1
         assertEquals(4, squareSequenceDigit(2))
         assertEquals(5, squareSequenceDigit(7))
         assertEquals(6, squareSequenceDigit(12))

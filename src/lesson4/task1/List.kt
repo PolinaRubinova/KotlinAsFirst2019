@@ -207,16 +207,14 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
 fun factorize(n: Int): List<Int> {
     var m = n
     val result = mutableListOf<Int>()
-    for (i in 2..m) {
-        if (isPrime(m)) {
-            result.add(m)
-            break
+    if (!isPrime(m))
+        for (i in 2..m) {
+            while ((m % i).toDouble() == 0.0) {
+                result.add(i)
+                m /= i
+            }
         }
-        while ((m % i).toDouble() == 0.0) {
-            result.add(i)
-            m /= i
-        }
-    }
+    else result.add(m)
     return result
 }
 
@@ -239,7 +237,7 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     val result = mutableListOf<Int>()
     var m = n
-    while (m / base != 0) {
+    while (m != 0) {
         result.add(0, m % base)
         m /= base
     }
@@ -248,6 +246,7 @@ fun convert(n: Int, base: Int): List<Int> {
 }
 
 /**
+ *
  * Сложная
  *
  * Перевести заданное целое число n >= 0 в систему счисления с основанием 1 < base < 37.
@@ -260,12 +259,10 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     val list = convert(n, base)
-    var answer = ""
-    val abc = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-        'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    var answer = String()
     for (i in 0 until list.size) {
-        if (list[i] >= 10) answer += abc[list[i] - 10]
-        else answer += list[i]
+        answer += if (list[i] >= 10) (list[i] + 87).toChar()
+        else (list[i] + 48).toChar()
     }
     return answer
 }
@@ -297,20 +294,17 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
-//val abc = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-//        'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
-//  val num = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10, "11", "12", ...)
-// val answer = mutableListOf<Int>()
-// for (i in 0 until str.length) {
-//if (abc.indexOf(str[i]) == -1) {
-//        answer.add(i, num.indexOf(str[i]))
-//  } else {
-//    answer.add(i, abc.indexOf(str[i]))
-// }
-// }
-// return decimal(answer, base)
-//}
+fun decimalFromString(str: String, base: Int): Int {
+    val answer = mutableListOf<Int>()
+    for (i in 0 until str.length) {
+        if (str[i].toInt() in 48..57) {
+            answer.add(i, str[i].toInt() - 48)
+        } else {
+            answer.add(i, str[i].toInt() - 87)
+        }
+    }
+    return decimal(answer, base)
+}
 
 /**
  * Сложная
