@@ -377,4 +377,116 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val answer = mutableListOf<String>()
+    if (n / 100000 != 0) {
+        when (n / 100000) {
+            1 -> answer.add("сто")
+            2 -> answer.add("двести")
+            3 -> answer.add("триста")
+            4 -> answer.add("четыреста")
+            5 -> answer.add("пятьсот")
+            6 -> answer.add("шестьсот")
+            7 -> answer.add("семьсот")
+            8 -> answer.add("восемьсот")
+            9 -> answer.add("девятьсот")
+        }
+        if ((((n % 10000) / 1000) == 0) && ((n % 1000) / 100 == 0)) answer.add("тысяч")
+    }
+    if ((n % 100000) / 10000 == 1) {
+        when ((n % 10000) / 1000) {
+            1 -> answer.add("одиннадцать")
+            2 -> answer.add("двенадцать")
+            3 -> answer.add("тринадцать")
+            4 -> answer.add("четырнадцать")
+            5 -> answer.add("пятнадцать")
+            6 -> answer.add("шестнадцать")
+            7 -> answer.add("семьнадцать")
+            8 -> answer.add("восемнадцать")
+            9 -> answer.add("девятнадцать")
+        }
+        answer.add("тысяч")
+    }
+    if (((n % 100000) / 10000 != 1) && (n % 100000) / 10000 != 0) {
+        when ((n % 100000) / 10000) {
+            2 -> answer.add("двадцать")
+            3 -> answer.add("тридцать")
+            4 -> answer.add("сорок")
+            5 -> answer.add("пятьдесят")
+            6 -> answer.add("шестьдесят")
+            7 -> answer.add("семьдесят")
+            8 -> answer.add("восемьдесят")
+            9 -> answer.add("девяносто")
+        }
+        if (((n % 10000) / 1000) == 0) answer.add("тысяч")
+    }
+    if (((n % 100000) / 10000 != 1) && ((n % 10000) / 1000 != 0)) {
+        when ((n % 10000) / 1000) {
+            2 -> answer.add("две")
+            3 -> answer.add("три")
+            4 -> answer.add("четыре")
+            5 -> answer.add("пять")
+            6 -> answer.add("шесть")
+            7 -> answer.add("семь")
+            8 -> answer.add("восемь")
+            9 -> answer.add("девять")
+        }
+        when ((n % 10000) / 1000) {
+            2, 3, 4 -> answer.add("тысячи")
+            else -> answer.add("тысяч")
+        }
+    }
+
+    if ((n % 1000) / 100 != 0) {
+        when ((n % 1000) / 100) {
+            1 -> answer.add("сто ")
+            2 -> answer.add("двести")
+            3 -> answer.add("триста")
+            4 -> answer.add("четыреста")
+            5 -> answer.add("пятьсот")
+            6 -> answer.add("шестьсот")
+            7 -> answer.add("семьсот")
+            8 -> answer.add("восемьсот")
+            9 -> answer.add("девятьсот")
+        }
+    }
+    if ((n % 100) / 10 == 1) {
+        when (n % 10) {
+            1 -> answer.add("одиннадцать")
+            2 -> answer.add("двенадцать")
+            3 -> answer.add("тринадцать")
+            4 -> answer.add("четырнадцать")
+            5 -> answer.add("пятнадцать")
+            6 -> answer.add("шестнадцать")
+            7 -> answer.add("семьнадцать")
+            8 -> answer.add("восемнадцать")
+            9 -> answer.add("девятнадцать")
+        }
+    }
+    if (((n % 100) / 10 != 1) && (n % 100) / 10 != 0) {
+        when ((n % 100) / 10) {
+            2 -> answer.add("двадцать")
+            3 -> answer.add("тридцать")
+            4 -> answer.add("сорок")
+            5 -> answer.add("пятьдесят")
+            6 -> answer.add("шестьдесят")
+            7 -> answer.add("семьдесят")
+            8 -> answer.add("восемьдесят")
+            9 -> answer.add("девяносто")
+        }
+    }
+    if (((n % 100) / 10 != 1) && (n % 10 != 0)) {
+        when (n % 10) {
+            1 -> answer.add("один")
+            2 -> answer.add("два")
+            3 -> answer.add("три")
+            4 -> answer.add("четыре")
+            5 -> answer.add("пять")
+            6 -> answer.add("шесть")
+            7 -> answer.add("семь")
+            8 -> answer.add("восемь")
+            9 -> answer.add("девять")
+        }
+    }
+    return answer.joinToString(separator = " ")
+}
