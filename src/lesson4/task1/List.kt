@@ -395,6 +395,7 @@ fun russian(n: Int): String {
     }
     if ((n % 100000) / 10000 == 1) {
         when ((n % 10000) / 1000) {
+            0 -> answer.add("десять")
             1 -> answer.add("одиннадцать")
             2 -> answer.add("двенадцать")
             3 -> answer.add("тринадцать")
