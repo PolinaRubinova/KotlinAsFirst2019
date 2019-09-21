@@ -8,6 +8,7 @@ import kotlin.math.min
 import kotlin.math.abs
 import kotlin.math.pow
 import lesson1.task1.sqr
+import kotlin.math.PI
 import java.util.*
 
 /**
@@ -220,9 +221,9 @@ fun collatzSteps(x: Int): Int {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {  //ДОДЕЛАТЬ
-    var i = 1
-    var j = 1
-    var ans = 0.0
+    var i = 3
+    var j = -1
+    var ans = x
     while (abs(x.pow(i) / factorial(i)) >= eps) {
         ans += abs(x.pow(i) / factorial(i)) * j
         j *= -1
