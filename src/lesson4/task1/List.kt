@@ -439,7 +439,7 @@ fun russian(n: Int): String {
 
     if ((n % 1000) / 100 != 0) {
         when ((n % 1000) / 100) {
-            1 -> answer.add("сто ")
+            1 -> answer.add("сто")
             2 -> answer.add("двести")
             3 -> answer.add("триста")
             4 -> answer.add("четыреста")
