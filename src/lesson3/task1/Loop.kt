@@ -8,7 +8,7 @@ import kotlin.math.min
 import kotlin.math.abs
 import kotlin.math.pow
 import lesson1.task1.sqr
-import kotlin.math.PI
+import kotlin.math.ceil
 import java.util.*
 
 /**
@@ -173,16 +173,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  *Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean { //РЕШИТЬ БЕЗ ЦИКЛА!
-    var q = false
-    for (i in min(m, n)..max(m, n)) {
-        if (sqrt(i.toDouble()) % 1.0 == 0.0) {
-            q = true
-            break
-        }
-    }
-    return q
-}
+fun squareBetweenExists(m: Int, n: Int): Boolean =
+    ((ceil(sqrt(m.toDouble())) >= sqrt(m.toDouble())) && (ceil(sqrt(m.toDouble())) <= sqrt(n.toDouble())))
 
 /**
  * * Средняя
@@ -323,7 +315,7 @@ fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНК
  *
  * Использовать операции со строками в этой задаче запрещается.
  * */
-fun fibSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ! (1)
+fun fibSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ! (2)
     var sum: Long = 0
     var i = 1
     var x: Int

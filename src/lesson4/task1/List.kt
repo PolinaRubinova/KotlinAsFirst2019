@@ -234,11 +234,11 @@ fun convert(n: Int, base: Int): List<Int> {
     val result = mutableListOf<Int>()
     var m = n
     while (m != 0) {
-        result.add(0, m % base)
+        result.add(m % base)
         m /= base
     }
-    if (m != 0 || result.isEmpty()) result.add(0, m)
-    return result
+    if (m != 0 || result.isEmpty()) result.add(m)
+    return result.reversed()
 }
 
 /**
