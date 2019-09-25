@@ -217,7 +217,7 @@ fun sin(x: Double, eps: Double): Double {  //ДОДЕЛАТЬ!
     var j = -1
     var ans = x
     while (abs(x.pow(i) / factorial(i)) >= eps) {
-        ans += abs(x.pow(i) / factorial(i)) * j
+        ans += x.pow(i) / factorial(i) * j
         j *= -1
         i += 2
     }
@@ -294,7 +294,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ! (1)
+fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ!
     var sum: Long = 0
     var i = 1
     var x: Int
@@ -315,7 +315,7 @@ fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНК
  *
  * Использовать операции со строками в этой задаче запрещается.
  * */
-fun fibSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ! (2)
+fun fibSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ!
     var sum: Long = 0
     var i = 1
     var x: Int
