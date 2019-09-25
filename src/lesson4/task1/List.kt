@@ -124,11 +124,9 @@ fun abs(v: List<Double>): Double = sqrt(v.map { it * it }.sum())
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    return when {
-        list.isEmpty() -> 0.0
-        else -> list.sum() / list.size
-    }
+fun mean(list: List<Double>): Double = when {
+    list.isEmpty() -> 0.0
+    else -> list.sum() / list.size
 }
 
 /**
@@ -189,10 +187,8 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    if (list.isNotEmpty()) {
-        for (i in 1 until list.size) {
-            list[i] += list[i - 1]
-        }
+    for (i in 1 until list.size) {
+        list[i] += list[i - 1]
     }
     return list
 }
@@ -241,7 +237,7 @@ fun convert(n: Int, base: Int): List<Int> {
         result.add(0, m % base)
         m /= base
     }
-    if (m % 10 != 0 || result.isEmpty()) result.add(0, m % base)
+    if (m != 0 || result.isEmpty()) result.add(0, m)
     return result
 }
 
@@ -257,7 +253,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {
+fun convertToString(n: Int, base: Int): String { //ПЕРЕДЕЛАТЬ!
     val list = convert(n, base)
     var answer = String()
     for (i in 0 until list.size) {
@@ -314,7 +310,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String {
+fun roman(n: Int): String { // ПЕРЕДЕЛАТЬ!
     var m = n
     var result = String()
     if (m / 1000 != 0) {
@@ -377,7 +373,7 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String {
+fun russian(n: Int): String { // ПЕРЕДЕЛАТЬ!
     val answer = mutableListOf<String>()
     if (n / 100000 != 0) {
         when (n / 100000) {
