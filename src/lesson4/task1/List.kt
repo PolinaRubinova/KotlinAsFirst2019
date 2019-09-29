@@ -317,6 +317,9 @@ fun roman(n: Int): String { // ПЕРЕДЕЛАТЬ!
 // val romnum = listOf('M', 'D', 'C', 'L', 'X', 'V', 'I')
     var m = n
     var result = String()
+    while (m != 0) {
+
+    }
     if (m / 1000 != 0) {
         for (i in 1..m / 1000) result += "M"
         m %= 1000
@@ -388,8 +391,9 @@ fun russian(n: Int): String {
         )
     val tens10to19 =
         listOf(
-            "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
-            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
+            "десять", "одиннадцать", "двенадцать", "тринадцать",
+            "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
+            "восемнадцать", "девятнадцать"
         )
     val tens20to90 =
         listOf(
@@ -429,7 +433,8 @@ fun russian(n: Int): String {
                 } else answer.add("тысяч")
             }
             1 -> {
-                if ((num[j] != 0) && ((num.size == 1) || (num[j - 1] != 1))) answer.add(units1[num[j] - 1])
+                if ((num[j] != 0) && ((num.size == 1) || (num[j - 1] != 1)))
+                    answer.add(units1[num[j] - 1])
             }
         }
         i--
