@@ -421,8 +421,6 @@ fun russian(n: Int): String {
             4 -> {
                 if ((num[j] != 0) && ((num.size == 4) || (num[j - 1] != 1))) {
                     answer.add(units1000[num[j] - 1])
-                }
-                if ((num[j] != 0) && ((num.size == 4) || (num[j - 1] != 1))) {
                     when (num[j]) {
                         1 -> answer.add("тысяча")
                         2, 3, 4 -> answer.add("тысячи")
