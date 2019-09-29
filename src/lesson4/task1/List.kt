@@ -253,9 +253,10 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
+const val asc2let = 87
+const val asc2num = 48
+
 fun convertToString(n: Int, base: Int): String { //ПЕРЕДЕЛАТЬ!
-    val asc2let = 87
-    //val asc2num = 48
     val list = convert(n, base)
     var answer = String()
     for (i in 0 until list.size) {
@@ -296,9 +297,9 @@ fun decimalFromString(str: String, base: Int): Int {
     val answer = mutableListOf<Int>()
     for (i in 0 until str.length) {
         if (str[i].toInt() in 48..57) {
-            answer.add(i, str[i].toInt() - 48)
+            answer.add(i, str[i].toInt() - asc2num)
         } else {
-            answer.add(i, str[i].toInt() - 87)
+            answer.add(i, str[i].toInt() - asc2let)
         }
     }
     return decimal(answer, base)
@@ -313,6 +314,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String { // ПЕРЕДЕЛАТЬ!
+// val romnum = listOf('M', 'D', 'C', 'L', 'X', 'V', 'I')
     var m = n
     var result = String()
     if (m / 1000 != 0) {
@@ -375,119 +377,62 @@ fun roman(n: Int): String { // ПЕРЕДЕЛАТЬ!
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String { // ПЕРЕДЕЛАТЬ!
+fun russian(n: Int): String {
+    val m = n.toString()
+    val num = mutableListOf<Int>()
     val answer = mutableListOf<String>()
-    if (n / 100000 != 0) {
-        when (n / 100000) {
-            1 -> answer.add("сто")
-            2 -> answer.add("двести")
-            3 -> answer.add("триста")
-            4 -> answer.add("четыреста")
-            5 -> answer.add("пятьсот")
-            6 -> answer.add("шестьсот")
-            7 -> answer.add("семьсот")
-            8 -> answer.add("восемьсот")
-            9 -> answer.add("девятьсот")
-        }
-        if ((((n % 100000) / 10000) == 0) && ((n % 10000) / 1000 == 0)) answer.add("тысяч")
+    val hundreds =
+        listOf(
+            "сто", "двести", "триста", "четыреста",
+            "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"
+        )
+    val tens10to19 =
+        listOf(
+            "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
+        )
+    val tens20to90 =
+        listOf(
+            "", "двадцать", "тридцать", "сорок", "пятьдесят",
+            "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
+        )
+    val units1000 =
+        listOf(
+            "одна", "две", "три", "четыре", "пять",
+            "шесть", "семь", "восемь", "девять"
+        )
+    val units1 =
+        listOf(
+            "один", "два", "три", "четыре", "пять",
+            "шесть", "семь", "восемь", "девять"
+        )
+    for (i in 0 until m.length) {
+        num.add(m[i].toInt() - asc2num)
     }
-    if ((n % 100000) / 10000 == 1) {
-        when ((n % 10000) / 1000) {
-            0 -> answer.add("десять")
-            1 -> answer.add("одиннадцать")
-            2 -> answer.add("двенадцать")
-            3 -> answer.add("тринадцать")
-            4 -> answer.add("четырнадцать")
-            5 -> answer.add("пятнадцать")
-            6 -> answer.add("шестнадцать")
-            7 -> answer.add("семнадцать")
-            8 -> answer.add("восемнадцать")
-            9 -> answer.add("девятнадцать")
+    var i = m.length
+    for (j in 0 until num.size) {
+        when (i) {
+            6, 3 -> if (num[j] != 0) answer.add(hundreds[num[j] - 1])
+            5, 2 ->
+                when {
+                    num[j] == 1 -> answer.add(tens10to19[num[j + 1]])
+                    num[j] != 0 -> answer.add(tens20to90[num[j] - 1])
+                }
+            4 -> {
+                if ((num[j] != 0) && ((num.size == 4) || (num[j - 1] != 1))) {
+                    answer.add(units1000[num[j] - 1])
+                }
+                when (num[j]) {
+                    1 -> answer.add("тысяча")
+                    2, 3, 4 -> answer.add("тысячи")
+                    else -> answer.add("тысяч")
+                }
+            }
+            1 -> {
+                if ((num[j] != 0) && ((num.size == 1) || (num[j - 1] != 1))) answer.add(units1[num[j] - 1])
+            }
         }
-        answer.add("тысяч")
-    }
-    if (((n % 100000) / 10000 != 1) && (n % 100000) / 10000 != 0) {
-        when ((n % 100000) / 10000) {
-            2 -> answer.add("двадцать")
-            3 -> answer.add("тридцать")
-            4 -> answer.add("сорок")
-            5 -> answer.add("пятьдесят")
-            6 -> answer.add("шестьдесят")
-            7 -> answer.add("семьдесят")
-            8 -> answer.add("восемьдесят")
-            9 -> answer.add("девяносто")
-        }
-        if (((n % 10000) / 1000) == 0) answer.add("тысяч")
-    }
-    if (((n % 100000) / 10000 != 1) && ((n % 10000) / 1000 != 0)) {
-        when ((n % 10000) / 1000) {
-            1 -> answer.add("одна")
-            2 -> answer.add("две")
-            3 -> answer.add("три")
-            4 -> answer.add("четыре")
-            5 -> answer.add("пять")
-            6 -> answer.add("шесть")
-            7 -> answer.add("семь")
-            8 -> answer.add("восемь")
-            9 -> answer.add("девять")
-        }
-        when ((n % 10000) / 1000) {
-            1 -> answer.add("тысяча")
-            2, 3, 4 -> answer.add("тысячи")
-            else -> answer.add("тысяч")
-        }
-    }
-    if ((n % 1000) / 100 != 0) {
-        when ((n % 1000) / 100) {
-            1 -> answer.add("сто")
-            2 -> answer.add("двести")
-            3 -> answer.add("триста")
-            4 -> answer.add("четыреста")
-            5 -> answer.add("пятьсот")
-            6 -> answer.add("шестьсот")
-            7 -> answer.add("семьсот")
-            8 -> answer.add("восемьсот")
-            9 -> answer.add("девятьсот")
-        }
-    }
-    if ((n % 100) / 10 == 1) {
-        when (n % 10) {
-            0 -> answer.add("десять")
-            1 -> answer.add("одиннадцать")
-            2 -> answer.add("двенадцать")
-            3 -> answer.add("тринадцать")
-            4 -> answer.add("четырнадцать")
-            5 -> answer.add("пятнадцать")
-            6 -> answer.add("шестнадцать")
-            7 -> answer.add("семнадцать")
-            8 -> answer.add("восемнадцать")
-            9 -> answer.add("девятнадцать")
-        }
-    }
-    if (((n % 100) / 10 != 1) && (n % 100) / 10 != 0) {
-        when ((n % 100) / 10) {
-            2 -> answer.add("двадцать")
-            3 -> answer.add("тридцать")
-            4 -> answer.add("сорок")
-            5 -> answer.add("пятьдесят")
-            6 -> answer.add("шестьдесят")
-            7 -> answer.add("семьдесят")
-            8 -> answer.add("восемьдесят")
-            9 -> answer.add("девяносто")
-        }
-    }
-    if (((n % 100) / 10 != 1) && (n % 10 != 0)) {
-        when (n % 10) {
-            1 -> answer.add("один")
-            2 -> answer.add("два")
-            3 -> answer.add("три")
-            4 -> answer.add("четыре")
-            5 -> answer.add("пять")
-            6 -> answer.add("шесть")
-            7 -> answer.add("семь")
-            8 -> answer.add("восемь")
-            9 -> answer.add("девять")
-        }
+        i--
     }
     return answer.joinToString(separator = " ")
 }
