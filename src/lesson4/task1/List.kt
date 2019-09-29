@@ -393,7 +393,7 @@ fun russian(n: Int): String {
         )
     val tens20to90 =
         listOf(
-            "", "двадцать", "тридцать", "сорок", "пятьдесят",
+            "десять", "двадцать", "тридцать", "сорок", "пятьдесят",
             "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
         )
     val units1000 =
@@ -422,11 +422,13 @@ fun russian(n: Int): String {
                 if ((num[j] != 0) && ((num.size == 4) || (num[j - 1] != 1))) {
                     answer.add(units1000[num[j] - 1])
                 }
-                when (num[j]) {
-                    1 -> answer.add("тысяча")
-                    2, 3, 4 -> answer.add("тысячи")
-                    else -> answer.add("тысяч")
-                }
+                if ((num[j] != 0) && ((num.size == 4) || (num[j - 1] != 1))) {
+                    when (num[j]) {
+                        1 -> answer.add("тысяча")
+                        2, 3, 4 -> answer.add("тысячи")
+                        else -> answer.add("тысяч")
+                    }
+                } else answer.add("тысяч")
             }
             1 -> {
                 if ((num[j] != 0) && ((num.size == 1) || (num[j - 1] != 1))) answer.add(units1[num[j] - 1])
