@@ -3,13 +3,11 @@
 package lesson3.task1
 
 import kotlin.math.sqrt
-import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.abs
 import kotlin.math.pow
 import lesson1.task1.sqr
 import kotlin.math.ceil
-import java.util.*
 
 /**
  * Пример
@@ -88,11 +86,11 @@ fun digitNumber(n: Int): Int = when {
 fun fib(n: Int): Int {
     var x = 0
     var y = 1
-    var q: Int
+    var z: Int
     for (i in 2..n) {
-        q = y
+        z = y
         y += x
-        x = q
+        x = z
     }
     return y
 }
@@ -297,10 +295,8 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ!
     var sum: Long = 0
     var i = 1
-    var x: Int
     while (sum < n) {
-        x = digitNumber(sqr(i))
-        sum += x
+        sum += digitNumber(sqr(i))
         i++
     }
     return ((sqr(i - 1) / 10.0.pow((sum - n).toInt()).toLong()) % 10).toInt()
@@ -318,10 +314,8 @@ fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНК
 fun fibSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ!
     var sum: Long = 0
     var i = 1
-    var x: Int
     while (sum < n) {
-        x = digitNumber(fib(i))
-        sum += x
+        sum += digitNumber(fib(i))
         i++
     }
     return ((fib(i - 1) / 10.0.pow((sum - n).toInt()).toLong()) % 10).toInt()

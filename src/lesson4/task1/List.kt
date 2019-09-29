@@ -314,15 +314,22 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String { // ПЕРЕДЕЛАТЬ!
-// val romnum = listOf('M', 'D', 'C', 'L', 'X', 'V', 'I')
+    val romnum = listOf('M', 'D', 'C', 'L', 'X', 'V', 'I')
     var m = n
+    var i = 0
+    var x = 1000
+    var y = 900
+    var z = 400
     var result = String()
     while (m != 0) {
+        for (i in 1..m / x) {
+            result += romnum[i].toString() + asc2let
+            m %= x
+        }
 
     }
     if (m / 1000 != 0) {
-        for (i in 1..m / 1000) result += "M"
-        m %= 1000
+
     }
     if (m / 900 != 0) {
         for (i in 1..m / 900) result += "CM"
