@@ -258,12 +258,12 @@ const val asc2num = 48
 
 fun convertToString(n: Int, base: Int): String { // ПЕРЕДЕЛАТЬ!
     val list = convert(n, base)
-    var answer = String()
+    var answer = StringBuilder()
     for (i in 0 until list.size) {
-        answer += if (list[i] >= 10) (list[i] + asc2let).toChar()
-        else list[i]
+        if (list[i] >= 10) answer.append((list[i] + asc2let).toChar())
+        else answer.append(list[i])
     }
-    return answer
+    return answer.toString()
 }
 
 /**
