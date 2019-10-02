@@ -293,7 +293,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ!
-    var sum: Long = 0
+    var sum = 0
     var i = 1
     while (sum < n) {
         sum += digitNumber(sqr(i))
@@ -311,8 +311,8 @@ fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНК
  *
  * Использовать операции со строками в этой задаче запрещается.
  * */
-fun fibSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ!
-    var sum: Long = 0
+fun fibSequenceDigit(n: Int): Int {
+    var sum = 0
     var i = 1
     while (sum < n) {
         sum += digitNumber(fib(i))
