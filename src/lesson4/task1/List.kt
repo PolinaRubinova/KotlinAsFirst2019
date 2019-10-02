@@ -258,7 +258,7 @@ const val asc2num = 48
 
 fun convertToString(n: Int, base: Int): String { // ПЕРЕДЕЛАТЬ!
     val list = convert(n, base)
-    var answer = StringBuilder()
+    val answer = StringBuilder()
     for (i in 0 until list.size) {
         if (list[i] >= 10) answer.append((list[i] + asc2let).toChar())
         else answer.append(list[i])
@@ -314,73 +314,38 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String { // ДОДЕЛАТЬ ПЕРЕДЕЛЫВАНИЕ!
-    val romnum = listOf('M', 'D', 'C', 'L', 'X', 'V', 'I')
+    val numb = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val result = StringBuilder()
     var m = n
-    var i = 0
     var x = 1000
-    var y = 900
-    var z = 400
-    var result = String()
+    var j = 0
     while (m != 0) {
-        for (i in 1..m / x) {
-            result += romnum[i].toString() + asc2let
+        if (m / x != 0) for (i in 1..m / x) {
+            result.append(numb[j])
             m %= x
-            result += romnum[i].toString() + asc2let
-            m %= y
         }
-
+        j++
+        if (m / (x - x / 10) != 0) for (i in 1..m / (x - x / 10)) {
+            result.append(numb[j])
+            m %= (x - x / 10)
+        }
+        j++
+        if ((x / 2 != 0) && (m / (x / 2) != 0)) for (i in 1..m / (x / 2)) {
+            result.append(numb[j])
+            m %= (x / 2)
+        }
+        j++
+        if (((x / 2) - x / 10 != 0) && (m / ((x / 2) - x / 10) != 0)) {
+            for (i in 1..m / ((x / 2) - x / 10)) {
+                result.append(numb[j])
+                m %= ((x / 2) - x / 10)
+            }
+        }
+        j++
+        x /= 10
     }
-    if (m / 1000 != 0) {
-
-    }
-    if (m / 900 != 0) {
-        for (i in 1..m / 900) result += "CM"
-        m %= 900
-    }
-    if (m / 500 != 0) {
-        for (i in 1..m / 500) result += "D"
-        m %= 500
-    }
-    if (m / 400 != 0) {
-        for (i in 1..m / 400) result += "CD"
-        m %= 400
-    }
-    if (m / 100 != 0) {
-        for (i in 1..m / 100) result += "C"
-        m %= 100
-    }
-    if (m / 90 != 0) {
-        for (i in 1..m / 90) result += "XC"
-        m %= 90
-    }
-    if (m / 50 != 0) {
-        for (i in 1..m / 50) result += "L"
-        m %= 50
-    }
-    if (m / 40 != 0) {
-        for (i in 1..m / 40) result += "XL"
-        m %= 40
-    }
-    if (m / 10 != 0) {
-        for (i in 1..m / 10) result += "X"
-        m %= 10
-    }
-    if (m / 9 != 0) {
-        for (i in 1..m / 9) result += "IX"
-        m %= 9
-    }
-    if (m / 5 != 0) {
-        for (i in 1..m / 5) result += "V"
-        m %= 5
-    }
-    if (m / 4 != 0) {
-        for (i in 1..m / 4) result += "IV"
-        m %= 4
-    }
-    if (m / 1 != 0) for (i in 1..m / 1) result += "I"
-    return result
+    return result.toString()
 }
-
 
 /**
  * Очень сложная
