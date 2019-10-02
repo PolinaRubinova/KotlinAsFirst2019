@@ -134,17 +134,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    if (isPrime(n)) return 1
-    return if (n % 2 == 0) n / 2
-    else {
-        var count = n - 2
-        while (n % count != 0) {
-            count -= 2
-        }
-        return count
-    }
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -299,7 +289,7 @@ fun squareSequenceDigit(n: Int): Int { //ВСПОМОГАТЕЛЬНАЯ ФУНК
         sum += digitNumber(sqr(i))
         i++
     }
-    return ((sqr(i - 1) / 10.0.pow((sum - n).toInt()).toLong()) % 10).toInt()
+    return (sqr(i - 1) / 10.0.pow((sum - n)) % 10).toInt()
 }
 
 /**
@@ -318,5 +308,5 @@ fun fibSequenceDigit(n: Int): Int {
         sum += digitNumber(fib(i))
         i++
     }
-    return ((fib(i - 1) / 10.0.pow((sum - n).toInt()).toLong()) % 10).toInt()
+    return (fib(i - 1) / 10.0.pow((sum - n)) % 10).toInt()
 }

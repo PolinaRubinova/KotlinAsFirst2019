@@ -256,7 +256,7 @@ fun convert(n: Int, base: Int): List<Int> {
 const val asc2let = 87
 const val asc2num = 48
 
-fun convertToString(n: Int, base: Int): String { // ПЕРЕДЕЛАТЬ!
+fun convertToString(n: Int, base: Int): String {
     val list = convert(n, base)
     val answer = StringBuilder()
     for (i in 0 until list.size) {
@@ -313,7 +313,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String { // ДОДЕЛАТЬ ПЕРЕДЕЛЫВАНИЕ!
+fun roman(n: Int): String {
     val numb = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     val result = StringBuilder()
     var m = n
