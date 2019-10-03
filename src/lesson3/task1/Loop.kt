@@ -8,6 +8,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 import lesson1.task1.sqr
 import kotlin.math.ceil
+import kotlin.math.PI
 
 /**
  * Пример
@@ -200,18 +201,18 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double {  //ДОДЕЛАТЬ!
+fun sin(x: Double, eps: Double): Double {
     var i = 3
     var j = -1
-    var ans = x
-    while (abs(x.pow(i) / factorial(i)) >= eps) {
-        ans += x.pow(i) / factorial(i) * j
+    val y = x % (2 * PI)
+    var ans = y
+    while (abs(y.pow(i) / factorial(i)) >= eps) {
+        ans += y.pow(i) / factorial(i) * j
         j *= -1
         i += 2
     }
     return ans
 }
-
 
 /**
  * Средняя
@@ -222,7 +223,18 @@ fun sin(x: Double, eps: Double): Double {  //ДОДЕЛАТЬ!
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var i = 0
+    var j = 1
+    val y = x % (2 * PI)
+    var ans = 0.0
+    while (abs(y.pow(i) / factorial(i)) >= eps) {
+        ans += y.pow(i) / factorial(i) * j
+        j *= -1
+        i += 2
+    }
+    return ans
+}
 
 /**
  * Средняя
