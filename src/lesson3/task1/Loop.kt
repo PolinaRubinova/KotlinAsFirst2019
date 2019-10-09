@@ -6,9 +6,9 @@ import kotlin.math.sqrt
 import kotlin.math.min
 import kotlin.math.abs
 import kotlin.math.pow
-import lesson1.task1.sqr
 import kotlin.math.ceil
 import kotlin.math.PI
+import lesson1.task1.sqr
 
 /**
  * Пример
@@ -293,7 +293,9 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  *
  * Использовать операции со строками в этой задаче запрещается.
+ *
  */
+
 fun squareSequenceDigit(n: Int): Int {
     var sum = 0
     var i = 1
