@@ -296,6 +296,8 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  */
 
+fun desiredNumber(num: Int, dig: Int): Int = (num / 10.0.pow(dig) % 10).toInt()
+
 fun squareSequenceDigit(n: Int): Int {
     var sum = 0
     var i = 1
@@ -303,7 +305,7 @@ fun squareSequenceDigit(n: Int): Int {
         sum += digitNumber(sqr(i))
         i++
     }
-    return (sqr(i - 1) / 10.0.pow((sum - n)) % 10).toInt()
+    return desiredNumber(sqr(i - 1), sum - n)
 }
 
 /**
@@ -322,5 +324,5 @@ fun fibSequenceDigit(n: Int): Int {
         sum += digitNumber(fib(i))
         i++
     }
-    return (fib(i - 1) / 10.0.pow((sum - n)) % 10).toInt()
+    return desiredNumber(fib(i - 1), sum - n)
 }
