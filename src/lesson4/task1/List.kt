@@ -314,35 +314,18 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val numb = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val numbers = mapOf(
+        1000 to "M", 900 to "CM", 500 to "D", 400 to "CD", 100 to "C", 90 to "XC",
+        50 to "L", 40 to "XL", 10 to "X", 9 to "IX", 5 to "V", 4 to "IV", 1 to "I"
+    )
     val result = StringBuilder()
     var m = n
-    var x = 1000
-    var j = 0
-    while (m != 0) {
-        if (m / x != 0) for (i in 1..m / x) {
-            result.append(numb[j])
-            m %= x
+    for ((key, value) in numbers) {
+        while (m - key >= 0) {
+            result.append(value)
+            m -= key
         }
-        j++
-        if (m / (x - x / 10) != 0) for (i in 1..m / (x - x / 10)) {
-            result.append(numb[j])
-            m %= (x - x / 10)
-        }
-        j++
-        if ((x / 2 != 0) && (m / (x / 2) != 0)) for (i in 1..m / (x / 2)) {
-            result.append(numb[j])
-            m %= (x / 2)
-        }
-        j++
-        if (((x / 2) - x / 10 != 0) && (m / ((x / 2) - x / 10) != 0)) {
-            for (i in 1..m / ((x / 2) - x / 10)) {
-                result.append(numb[j])
-                m %= ((x / 2) - x / 10)
-            }
-        }
-        j++
-        x /= 10
+        println(result)
     }
     return result.toString()
 }
