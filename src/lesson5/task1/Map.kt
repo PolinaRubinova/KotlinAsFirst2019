@@ -94,16 +94,16 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val result = mutableMapOf<Int, MutableList<String>>()
-    for ((name1, grade) in grades) {
+    for ((_, grade1) in grades) {
         val list = mutableListOf<String>()
-        if (grade !in result) {
-            for ((name2) in grades) {
-                if (grades[name1] == grades[name2]) {
+        if (grade1 !in result) {
+            for ((name2, grade2) in grades) {
+                if (grade1 == grade2) {
                     list.add(name2)
                 }
             }
         }
-        if (list.isNotEmpty()) result[grade] = list
+        if (list.isNotEmpty()) result[grade1] = list
     }
     return result
 }
@@ -181,7 +181,18 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val result = mutableMapOf<String, String>()
+    for ((key, value) in mapB + mapA) {
+        val list = mutableListOf<String>()
+        list.add(value)
+        if (mapB[key] != value) {
+            mapB[key]?.let { list.add(it) }
+        }
+        if (list.isNotEmpty()) result[key] = list.joinToString(separator = ", ")
+    }
+    return result
+}
 
 /**
  * Средняя

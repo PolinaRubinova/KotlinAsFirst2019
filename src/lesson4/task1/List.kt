@@ -325,7 +325,6 @@ fun roman(n: Int): String {
             result.append(value)
             m -= key
         }
-        println(result)
     }
     return result.toString()
 }
