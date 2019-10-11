@@ -204,7 +204,20 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    for (i in 0 until stockPrices.size) {
+        if (stockPrices[i].first !in result) {
+            result[stockPrices[i].first] = stockPrices[i].second
+        } else {
+            val help = result[stockPrices[i].first]
+            if (help != null) {
+                result[stockPrices[i].first] = (help + stockPrices[i].second) / 2
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -221,7 +234,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var answer: String? = null
+    var min = 0.0
+    for ((key, value) in stuff) {
+        if ((value.first == kind) && ((min == 0.0) || (value.second < min))) {
+            min = value.second
+            answer = key
+        }
+    }
+    return answer
+}
 
 /**
  * Средняя
