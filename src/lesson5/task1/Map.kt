@@ -145,7 +145,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
     for ((key) in b) {
-        if (containsIn(b, a)) a.remove(key)
+        if (b[key] == a[key]) a.remove(key)
     }
 }
 
@@ -206,14 +206,19 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val result = mutableMapOf<String, Double>()
+    var count: Int
+    var sum: Double
     for (i in 0 until stockPrices.size) {
         if (stockPrices[i].first !in result) {
-            result[stockPrices[i].first] = stockPrices[i].second
-        } else {
-            val help = result[stockPrices[i].first]
-            if (help != null) {
-                result[stockPrices[i].first] = (help + stockPrices[i].second) / 2
+            count = 1
+            sum = stockPrices[i].second
+            for (j in i + 1 until stockPrices.size) {
+                if (stockPrices[i].first == stockPrices[j].first) {
+                    count++
+                    sum += stockPrices[j].second
+                }
             }
+            result[stockPrices[i].first] = sum / count
         }
     }
     return result
