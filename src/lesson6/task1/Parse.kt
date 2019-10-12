@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+import java.lang.StringBuilder
+
 /**
  * Пример
  *
@@ -69,7 +72,30 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val answer = StringBuilder()
+    val months = listOf(
+        "", "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "авгуса", "сентября", "октября", "ноября", "декабря"
+    )
+    val parts = str.split(" ")
+    if (parts.size == 3) {
+        val day = parts[0].toInt()
+        var month = 0
+        if (parts[1] in months) month = months.indexOf(parts[1])
+        val year = parts[2].toInt()
+        if ((month != 0) && (daysInMonth(month, year) >= day)) {
+            if (day in 0..9) {
+                answer.append("0$day.")
+            } else answer.append(day, ".")
+            if (month in 0..9) {
+                answer.append("0$month.")
+            } else answer.append(month, ".")
+            answer.append(year)
+        }
+    }
+    return answer.toString()
+}
 
 /**
  * Средняя
@@ -81,7 +107,26 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val answer = StringBuilder()
+    val months = listOf(
+        "", "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "авгуса", "сентября", "октября", "ноября", "декабря"
+    )
+    val parts = digital.split(".")
+    if (parts.size == 3) {
+        val day = parts[0].toIntOrNull()
+        var month = ""
+        if (parts[1].toIntOrNull() in 1..12) month = months[parts[1].toIntOrNull()!!]
+        val year = parts[2].toIntOrNull()
+        if ((day != null) && (month != "") && (year != null) &&
+            (daysInMonth(parts[1].toIntOrNull()!!, year) >= day)
+        ) {
+            answer.append(day, " ", month, " ", year)
+        }
+    }
+    return answer.toString()
+}
 
 /**
  * Средняя
