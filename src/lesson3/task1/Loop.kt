@@ -295,7 +295,6 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  *
  */
-
 fun desiredNumber(num: Int, dig: Int): Int = (num / 10.0.pow(dig) % 10).toInt()
 
 fun squareSequenceDigit(n: Int): Int {
