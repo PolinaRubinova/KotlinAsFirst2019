@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import lesson4.task1.asc2let
+
 /**
  * Пример
  *
@@ -310,31 +312,39 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
-/**{
-var answer = false
-for (i in 0 until words.size) {
-var word1 = words[i]
-for (j in i + 1 until words.size) {
-var word2 = words[j]
-if (word1.length == word2.length) {
-for (q in 0 until word1.length) {
-if (word1[q] in word2) {
-word1 = word1.replace(word1[q], ' ')
-word2 = word2.replace(word2[word2.indexOf(word1[q])], ' ') //?????????????
+
+fun stringToChars(str: String): MutableList<Char> {
+    val list = mutableListOf<Char>()
+    for (i in 0 until str.length) {
+        list.add(str[i])
+    }
+    return list
 }
-println(word1)
-println(word2)
+
+fun hasAnagrams(words: List<String>): Boolean {
+    var answer = false
+    for (i in 0 until words.size) {
+        for (j in i + 1 until words.size) {
+            if (words[i].length == words[j].length) {
+                val str1 = stringToChars(words[i])
+                val str2 = stringToChars(words[j])
+                var q = 0
+                while ((str1 != str2) && (q < str1.size)) {
+                    if (str1[q] in str2) {
+                        str2.remove(str1[q])
+                        str1.remove(str1[q])
+                        if (q != 0) q--
+                    } else q++
+                }
+                if (str1 == str2) {
+                    answer = true
+                    break
+                }
+            }
+        }
+    }
+    return answer
 }
-}
-if (word1 == word2) {
-answer = true
-break
-}
-}
-}
-return answer
-}*/
 
 /**
  * Сложная
