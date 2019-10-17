@@ -205,7 +205,7 @@ fun factorize(n: Int): List<Int> {
     val result = mutableListOf<Int>()
     if (!isPrime(m))
         for (i in 2..m) {
-            while ((m % i).toDouble() == 0.0) {
+            while (m % i == 0) {
                 result.add(i)
                 m /= i
             }
