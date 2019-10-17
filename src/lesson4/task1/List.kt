@@ -298,9 +298,9 @@ fun decimalFromString(str: String, base: Int): Int {
     val answer = mutableListOf<Int>()
     for (i in 0 until str.length) {
         if (str[i].toInt() in 48..57) {
-            answer.add(i, str[i].toInt() - asc2num)
+            answer.add(str[i].toInt() - asc2num)
         } else {
-            answer.add(i, str[i].toInt() - asc2let)
+            answer.add(str[i].toInt() - asc2let)
         }
     }
     return decimal(answer, base)
