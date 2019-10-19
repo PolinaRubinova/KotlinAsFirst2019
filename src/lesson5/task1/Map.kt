@@ -159,11 +159,11 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val result = mutableListOf<String>()
+    val result = mutableSetOf<String>()
     for (i in 0 until a.size) {
         if ((a[i] in b) && (a[i] !in result)) result.add(a[i])
     }
-    return result
+    return result.toList()
 }
 
 /**
@@ -265,11 +265,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     var answer = true
     val wordLowerCase = word.toLowerCase()
-    val charsLowerCase = mutableListOf<Char>()
+    val charsLowerCase = mutableSetOf<Char>()
     if ((chars.isEmpty()) && (word.isNotEmpty())) {
         return false
     } else {
-        for (i in 0 until chars.size) charsLowerCase.add(chars[i].toLowerCase())
+        charsLowerCase.addAll(chars.map { it.toLowerCase() })
         for (char in wordLowerCase) {
             if (char !in charsLowerCase) answer = false
         }
@@ -316,7 +316,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
 fun stringToChars(str: String): MutableList<Char> {
     val list = mutableListOf<Char>()
     for (i in 0 until str.length) {
-        list.add(str[i])
+        list.add(str[1])
     }
     return list
 }
