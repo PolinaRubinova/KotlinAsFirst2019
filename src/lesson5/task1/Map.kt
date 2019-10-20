@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import lesson4.task1.asc2let
-
 /**
  * Пример
  *
@@ -96,16 +94,10 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val result = mutableMapOf<Int, MutableList<String>>()
-    for ((_, grade1) in grades) {
+    for ((_, grade) in grades) {
         val list = mutableListOf<String>()
-        if (grade1 !in result) {
-            for ((name2, grade2) in grades) {
-                if (grade1 == grade2) {
-                    list.add(name2)
-                }
-            }
-        }
-        if (list.isNotEmpty()) result[grade1] = list
+        if (grade !in result) list.addAll(grades.filter { it.value == grade }.keys)
+        if (list.isNotEmpty()) result[grade] = list
     }
     return result
 }
@@ -207,21 +199,13 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val stocks = stockPrices.groupingBy { it.first }.eachCount()
     val result = mutableMapOf<String, Double>()
-    var count: Int
-    var sum: Double
-    for (i in 0 until stockPrices.size) {
-        if (stockPrices[i].first !in result) {
-            count = 1
-            sum = stockPrices[i].second
-            for (j in i + 1 until stockPrices.size) {
-                if (stockPrices[i].first == stockPrices[j].first) {
-                    count++
-                    sum += stockPrices[j].second
-                }
-            }
-            result[stockPrices[i].first] = sum / count
-        }
+    for ((key, value) in stockPrices) {
+        if (stocks[key] != 1) {
+            result[key] =
+                stockPrices.filter { it.first == key }.sumByDouble { it.second } / (stocks[key] ?: error(""))
+        } else result[key] = value
     }
     return result
 }
@@ -263,16 +247,17 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val stringToChars = stringToChars(word)
+    if (chars.isEmpty() || word.isEmpty()) return false
+    val charsSorted = chars.sorted()
     var answer = true
-    val wordLowerCase = word.toLowerCase()
-    val charsLowerCase = mutableSetOf<Char>()
-    if ((chars.isEmpty()) && (word.isNotEmpty())) {
-        return false
-    } else {
-        charsLowerCase.addAll(chars.map { it.toLowerCase() })
-        for (char in wordLowerCase) {
-            if (char !in charsLowerCase) answer = false
+    var i = 0
+    for ((key, _) in stringToChars) {
+        if (key != charsSorted[i]) {
+            answer = false
+            break
         }
+        i++
     }
     return answer
 }
@@ -289,19 +274,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> {
-    val result = mutableMapOf<String, Int>()
-    for (element1 in list) {
-        if (element1 !in result) {
-            var count = 0
-            for (element2 in list) {
-                if (element2 == element1) count++
-            }
-            if (count != 1) result[element1] = count
-        }
-    }
-    return result
-}
+fun extractRepeats(list: List<String>): Map<String, Int> = list.groupingBy { it }.eachCount().filterValues { it > 1 }
 
 /**
  * Средняя
@@ -313,12 +286,13 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 
-fun stringToChars(str: String): MutableList<Char> {
-    val list = mutableListOf<Char>()
+fun stringToChars(str: String): Map<Char, Int> {
+    var list = mutableListOf<Char>()
     for (i in 0 until str.length) {
-        list.add(str[1])
+        list.add(str[i])
     }
-    return list
+    list = list.sorted() as MutableList<Char>
+    return list.groupingBy { it }.eachCount()
 }
 
 fun hasAnagrams(words: List<String>): Boolean {
@@ -328,14 +302,6 @@ fun hasAnagrams(words: List<String>): Boolean {
             if (words[i].length == words[j].length) {
                 val str1 = stringToChars(words[i])
                 val str2 = stringToChars(words[j])
-                var q = 0
-                while ((str1 != str2) && (q < str1.size)) {
-                    if (str1[q] in str2) {
-                        str2.remove(str1[q])
-                        str1.remove(str1[q])
-                        if (q != 0) q--
-                    } else q++
-                }
                 if (str1 == str2) {
                     answer = true
                     break
@@ -370,7 +336,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> { //ДОДЕЛАТЬ!!!
     val result = friends.toMutableMap()
     var list = mutableListOf<String>()
     for ((name, friendName) in friends) {
