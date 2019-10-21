@@ -249,7 +249,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val stringToChars = stringToChars(word)
-    if (chars.isEmpty() || word.isEmpty()) return false
+    if (chars.isEmpty() && word.isNotEmpty()) return false
     val charsSorted = chars.sorted()
     var answer = true
     var i = 0
