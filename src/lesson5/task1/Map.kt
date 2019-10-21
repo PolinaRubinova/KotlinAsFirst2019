@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import java.nio.charset.CharsetEncoder
+
 /**
  * Пример
  *
@@ -59,8 +61,8 @@ fun removeFillerWords(
     vararg fillerWords: String
 ): List<String> {
     val fillerWordSet = setOf(*fillerWords)
-
     val res = mutableListOf<String>()
+
     for (word in text) {
         if (word !in fillerWordSet) {
             res += word
@@ -247,21 +249,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val stringToChars = stringToChars(word)
-    if (chars.isEmpty() && word.isNotEmpty()) return false
-    val charsSorted = chars.sorted()
-    var answer = true
-    var i = 0
-    for ((key, _) in stringToChars) {
-        if (key != charsSorted[i]) {
-            answer = false
-            break
-        }
-        i++
-    }
-    return answer
-}
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    (stringToChars(word).keys - chars.sorted()).isEmpty()
 
 /**
  * Средняя
