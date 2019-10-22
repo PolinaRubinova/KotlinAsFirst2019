@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import java.nio.charset.CharsetEncoder
+import java.util.Collections.max
 
 /**
  * Пример
@@ -249,8 +250,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean =
-    (stringToChars(word).keys - chars.sorted()).isEmpty()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val result = mutableListOf<Char>()
+    for (element in chars) result.add(element.toLowerCase())
+    return (stringToChars(word.toLowerCase()).keys - result.sorted()).isEmpty()
+}
 
 /**
  * Средняя
@@ -312,22 +316,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()  //ДОДЕЛАТЬ!!!
-/**
-val result = friends as MutableMap<String, MutableSet<String>>
-for ((name, friendName) in friends) {
-for (element in friendName) {
-println(element)
-println(result)
-if (element in result.keys) {
-result[element]?.add(name)
-} else {
-result[element] = mutableSetOf()
-}
-}
-}
-return result
-}*/
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
 
 /**
  * Сложная
@@ -349,10 +338,8 @@ return result
 
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     for (i in 0 until list.size) {
-        for (j in i + 1 until list.size) {
-            if (list[i] + list[j] == number) {
-                return i to j
-            }
+        if ((number - list[i] in list) && (list.indexOf(number - list[i]) != i)) {
+            return i to list.indexOf(number - list[i])
         }
     }
     return -1 to -1
