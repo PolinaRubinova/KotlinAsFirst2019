@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import lesson4.task1.asc2num
 import java.lang.StringBuilder
 
 /**
@@ -72,31 +73,31 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
-/**{
-val answer = StringBuilder()
-val months = listOf(
-"", "января", "февраля", "марта", "апреля", "мая", "июня",
-"июля", "августа", "сентября", "октября", "ноября", "декабря"
-)
-val parts = str.split(" ")
-if (parts.size == 3) {
-val day = parts[0].toInt()
-var month = 0
-if (parts[1] in months) month = months.indexOf(parts[1])
-val year = parts[2].toInt()
-if ((month != 0) && (daysInMonth(month, year) >= day)) {
-if (day in 0..9) {
-answer.append("0$day.")
-} else answer.append(day, ".")
-if (month in 0..9) {
-answer.append("0$month.")
-} else answer.append(month, ".")
-answer.append(year)
+fun dateStrToDigit(str: String): String {
+    val answer = StringBuilder()
+    val months = listOf(
+        "", "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    )
+    val parts = str.split(" ")
+    if (parts.size == 3) {
+        if (parts[0].toInt() < 1 || parts[0].toInt() > 31) return ""
+        val day = parts[0].toInt()
+        var month = 0
+        if (parts[1] in months) month = months.indexOf(parts[1])
+        val year = parts[2].toInt()
+        if ((month != 0) && (daysInMonth(month, year) >= day)) {
+            if (day in 0..9) {
+                answer.append("0$day.")
+            } else answer.append(day, ".")
+            if (month in 0..9) {
+                answer.append("0$month.")
+            } else answer.append(month, ".")
+            answer.append(year)
+        }
+    }
+    return answer.toString()
 }
-}
-return answer.toString()
-}*/
 
 /**
  * Средняя
