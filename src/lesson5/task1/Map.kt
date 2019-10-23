@@ -2,9 +2,6 @@
 
 package lesson5.task1
 
-import java.nio.charset.CharsetEncoder
-import java.util.Collections.max
-
 /**
  * Пример
  *
@@ -316,7 +313,23 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val result = mutableMapOf<String, MutableSet<String>>()
+    for ((name, friendSet) in friends) {
+        result[name] = friendSet as MutableSet<String>
+        for (friendName in friendSet) {
+            val set = mutableSetOf<String>()
+            if (friendName in friends.keys) {
+                friends[friendName]?.let { set.addAll(it) }
+                friends[name]?.let { set.addAll(it) }
+                result[name] = set.filter { it != name }.toMutableSet()
+            } else {
+                result[friendName] = mutableSetOf<String>()
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -367,16 +380,3 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
-/**{val sumWeights = treasures.values.sumBy { it.first }
-    val map = mutableMapOf<Int, Int>()
-    for (i in 1..sumWeights) {
-        for (j in 1..capacity) {
-            if (treasures.values[i - 1] <= j) {
-                map[w][j] = max(dp[w][j - 1], dp[w - weights[j-1]][j - 1] + costs[j-1]);
-            } else {
-                dp[w][j] = dp[w][j - 1];
-            }
-        }
-    }
-    return dp[needed][n];
-}*/
