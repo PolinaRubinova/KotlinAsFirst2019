@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import java.nio.charset.CharsetEncoder
+import java.util.Collections.max
+
 /**
  * Пример
  *
@@ -321,7 +324,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
             val set = mutableSetOf<String>()
             if (friendName in friends.keys) {
                 friends[friendName]?.let { set.addAll(it) }
-                friends[name]?.let { set.addAll(it) }
+                result[name]?.let { set.addAll(it) }
                 result[name] = set.filter { it != name }.toMutableSet()
             } else {
                 result[friendName] = mutableSetOf<String>()
