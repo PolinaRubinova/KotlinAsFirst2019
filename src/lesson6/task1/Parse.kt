@@ -87,8 +87,9 @@ fun dateStrToDigit(str: String): String {
         if (parts[1] in months) {
             month = months.indexOf(parts[1])
         } else return ""
+        if (parts[2].toInt() <= 0) return ""
         val year = parts[2].toInt()
-        if ((month != 0) && (daysInMonth(month, year) >= day)) {
+        if (daysInMonth(month, year) >= day) {
             if (day in 0..9) {
                 answer.append("0$day.")
             } else answer.append(day, ".")
@@ -97,8 +98,8 @@ fun dateStrToDigit(str: String): String {
             } else answer.append(month, ".")
             answer.append(year)
         }
-    }
-    return answer.toString() ?: ""
+    } else return ""
+    return answer.toString()
 }
 
 /**
