@@ -74,32 +74,20 @@ fun main() {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    val answer = StringBuilder()
     val months = listOf(
         "", "января", "февраля", "марта", "апреля", "мая", "июня",
         "июля", "августа", "сентября", "октября", "ноября", "декабря"
     )
     val parts = str.split(" ")
-    if (parts.size == 3) {
-        if (parts[0].toInt() < 1 || parts[0].toInt() > 31) return ""
-        val day = parts[0].toInt()
-        val month: Int
-        if (parts[1] in months) {
-            month = months.indexOf(parts[1])
-        } else return ""
-        if (parts[2].toInt() < 0) return ""
-        val year = parts[2].toInt()
-        if (daysInMonth(month, year) >= day) {
-            if (day in 0..9) {
-                answer.append("0$day.")
-            } else answer.append(day, ".")
-            if (month in 0..9) {
-                answer.append("0$month.")
-            } else answer.append(month, ".")
-            answer.append(year)
-        }
+    if (parts.size != 3) return ""
+    val day = parts[0].toInt()
+    val month: Int
+    if (parts[1] in months) {
+        month = months.indexOf(parts[1])
     } else return ""
-    return answer.toString()
+    val year = parts[2].toInt()
+    if (daysInMonth(month, year) < day) return ""
+    return String.format("%02d.%02d.%d", day, month, year)
 }
 
 /**
@@ -112,26 +100,22 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
-/**{
-val answer = StringBuilder()
-val months = listOf(
-"", "января", "февраля", "марта", "апреля", "мая", "июня",
-"июля", "августа", "сентября", "октября", "ноября", "декабря"
-)
-val parts = digital.split(".")
-if (parts.size == 3) {
-val day = parts[0].toIntOrNull()
-var month = ""
-if (parts[1].toIntOrNull() in 1..12) month = months[parts[1].toIntOrNull()!!]
-val year = parts[2].toIntOrNull()
-if ((day != null) && (month != "") && (year != null) &&
-(daysInMonth(parts[1].toIntOrNull()!!, year) >= day)
-) {
-answer.append(day, " ", month, " ", year)
-}
-}
-return answer.toString()
+fun dateDigitToStr(digital: String): String = TODO() //ДОДЕЛАТЬ
+/*{
+    val months = listOf(
+        "", "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    )
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+    val day = parts[0].toInt()
+    val month: String
+    if (parts[1].toInt() > 0 && parts[1].toInt() < months.size) {
+        month = months[parts[1].toInt()]
+    } else return ""
+    val year = parts[2].toInt()
+    if (daysInMonth(parts[1].toInt(), year) < day) return ""
+    return String.format("%d %s %d", day, month, year)
 }*/
 
 /**
