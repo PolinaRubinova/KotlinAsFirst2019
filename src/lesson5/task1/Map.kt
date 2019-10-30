@@ -4,6 +4,7 @@ package lesson5.task1
 
 import java.nio.charset.CharsetEncoder
 import java.util.Collections.max
+import kotlin.math.max
 
 /**
  * Пример
@@ -386,4 +387,17 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val result = mutableSetOf<String>()
+    val sortedTreasured = mutableMapOf<Set<String>, Pair<Int, Int>>()
+    val weightAndPrice = treasures.values.sortedByDescending { it.second }
+    for (i in 0 until weightAndPrice.size) {
+        sortedTreasured[treasures.filterValues { it == weightAndPrice[i] }.keys] = weightAndPrice[i]
+    }
+    for ((title, wAndP) in sortedTreasured) {
+        for (element in title) {
+            if (wAndP.first <= capacity) result.add(element)
+        }
+    }
+    return result
+}
