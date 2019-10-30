@@ -98,11 +98,17 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val result = mutableMapOf<Int, MutableList<String>>()
-    for ((_, grade) in grades) {
-        val list = mutableListOf<String>()
-        if (grade !in result) list.addAll(grades.filter { it.value == grade }.keys)
-        if (list.isNotEmpty()) result[grade] = list
+    for ((name, grade) in grades) {
+        if (grade !in result) {
+            result[grade] = mutableListOf()
+        } else {
+            result[grade]?.add(name)
+        }
     }
+    /*val sortedGrades = grades.values.sortedBy { it }.toSet()
+    for (grade in sortedGrades) {
+        result[grade] = grades.filterValues { it == grade }.keys.toList()
+    }*/
     return result
 }
 
@@ -154,13 +160,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val result = mutableSetOf<String>()
-    for (i in 0 until a.size) {
-        if ((a[i] in b) && (a[i] !in result)) result.add(a[i])
-    }
-    return result.toList()
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
 
 /**
  * Средняя
@@ -209,7 +209,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
         if (stocks[key] != 1) {
             result[key] =
                 stockPrices.filter { it.first == key }.sumByDouble { it.second } /
-                        (stocks[key] ?: error(""))
+                        (stocks[key])!!
         } else result[key] = value
     }
     return result
@@ -252,9 +252,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val result = mutableListOf<Char>()
+    val result = mutableSetOf<Char>()
     for (element in chars) result.add(element.toLowerCase())
-    return (stringToChars(word.toLowerCase()).keys - result.sorted()).isEmpty()
+    return stringToChars(word.toLowerCase()).keys.sorted() == result.sorted()
 }
 
 /**
@@ -327,10 +327,10 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
             size = result[name]!!.size
             for (friendName in result[name]!!) {
                 if (friendName in friends.keys) {
-                    val set = mutableSetOf<String>()
-                    friends[friendName]?.let { set.addAll(it) }
-                    result[name]?.let { set.addAll(it) }
-                    result[name] = set.filter { it != name }.toSet()
+                    val helper = mutableSetOf<String>()
+                    friends[friendName]?.let { helper.addAll(it) }
+                    result[name]?.let { helper.addAll(it) }
+                    result[name] = helper.filter { it != name }.toSet()
                 } else result[friendName] = mutableSetOf<String>()
             }
             sizeCheck = result[name]!!.size
@@ -358,6 +358,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    if (list.isEmpty()) return -1 to -1
     for (i in 0 until list.size) {
         if ((number - list[i] in list) && (list.indexOf(number - list[i]) != i)) {
             return i to list.indexOf(number - list[i])
@@ -388,6 +389,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    var mutableCapacity = capacity
     val result = mutableSetOf<String>()
     val sortedTreasured = mutableMapOf<Set<String>, Pair<Int, Int>>()
     val weightAndPrice = treasures.values.sortedByDescending { it.second }
@@ -396,7 +398,10 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     }
     for ((title, wAndP) in sortedTreasured) {
         for (element in title) {
-            if (wAndP.first <= capacity) result.add(element)
+            if (wAndP.first <= mutableCapacity) {
+                result.add(element)
+                mutableCapacity -= wAndP.first
+            }
         }
     }
     return result
