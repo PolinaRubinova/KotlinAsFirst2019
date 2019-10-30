@@ -102,10 +102,6 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
         if (grade in result) result[grade]!!.add(name)
         else result[grade] = mutableListOf(name)
     }
-    /*val sortedGrades = grades.values.sortedBy { it }.toSet()
-    for (grade in sortedGrades) {
-        result[grade] = grades.filterValues { it == grade }.keys.toList()
-    }*/
     return result
 }
 
@@ -249,7 +245,6 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    if (word.isEmpty()) return true
     val result = mutableSetOf<Char>()
     for (element in chars) result.add(element.toLowerCase())
     return (stringToChars(word.toLowerCase()).keys.sorted() - result.sorted()).isEmpty()
