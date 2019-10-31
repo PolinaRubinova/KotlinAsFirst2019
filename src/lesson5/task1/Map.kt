@@ -352,12 +352,11 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     if (list.size < 2) return -1 to -1
-    val mapWithIndex = mutableMapOf<Int, Int>()
-    for (i in 0 until list.size) mapWithIndex[list[i]] = i
-    for ((num, ind) in mapWithIndex) {
-        if ((number - num in mapWithIndex.keys) && (mapWithIndex[number - num] != ind)) {
-            return ind to mapWithIndex[number - num]!!
-        }
+    val mapOfElAndInd = mutableMapOf<Int, Int>()
+    for (i in 0 until list.size) {
+        val j = mapOfElAndInd[list[i]]
+        if ((j != null) && (j != i)) return j to i
+        mapOfElAndInd[number - list[i]] = i
     }
     return -1 to -1
 }
@@ -383,7 +382,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> { // ПЕРЕДЕЛАТЬ!!! НЕ РАБОТАЕТ!!!
     var mutableCapacity = capacity
     val result = mutableSetOf<String>()
     val sortedTreasured = mutableMapOf<Set<String>, Pair<Int, Int>>()
