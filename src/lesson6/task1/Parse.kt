@@ -110,7 +110,8 @@ fun dateDigitToStr(digital: String): String {
     val day = parts[0].toIntOrNull()
     val month: String
     if (parts[1].toIntOrNull() != null && parts[1].toIntOrNull()!! > 0 &&
-        parts[1].toIntOrNull()!! < months.size) {
+        parts[1].toIntOrNull()!! < months.size
+    ) {
         month = months[parts[1].toIntOrNull()!!]
     } else return ""
     val year = parts[2].toIntOrNull()
