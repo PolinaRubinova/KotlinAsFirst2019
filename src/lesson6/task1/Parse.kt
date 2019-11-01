@@ -3,8 +3,6 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import lesson4.task1.asc2num
-import java.lang.StringBuilder
 
 /**
  * Пример
@@ -134,7 +132,16 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val answer = StringBuilder()
+    if (phone.indexOf("(") + 1 == phone.indexOf(")")) return ""
+    if (Regex("""[^-+() 0123456789]""").containsMatchIn(input = phone)) return ""
+    if (phone.indexOf("+") == 0) answer.append("+")
+    for (element in Regex("""\d+""").findAll(input = phone)) {
+        answer.append(element.value)
+    }
+    return answer.toString()
+}
 
 /**
  * Средняя
