@@ -137,7 +137,7 @@ fun flattenPhoneNumber(phone: String): String {
     if ((phone.indexOf("(") + 1 == phone.indexOf(")")) ||
         (Regex("""[^-+() 0123456789]""").containsMatchIn(phone))
     ) return ""
-    if (phone.indexOf("+") == 0) answer.append("+")
+    if (phone.indexOf("+") == 0 && phone.length != 1) answer.append("+")
     for (element in Regex("""\d+""").findAll(phone)) {
         answer.append(element.value)
     }
