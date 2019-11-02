@@ -225,15 +225,11 @@ fun plusMinus(expression: String): Int {
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int {
-    var strToLowerCase = str.toLowerCase()
-    val listStr = Regex("""\s""").split(strToLowerCase).map { it }
+    var counter = 0
+    val listStr = str.toLowerCase().split(" ")
     for (i in 0..listStr.size - 2) {
-        if (listStr[i] == listStr[i + 1]) return strToLowerCase.indexOf(listStr[i][0])
-        else {
-            var helper = String()
-            for (j in 0 until listStr[i].length) helper += "*"
-            strToLowerCase = strToLowerCase.replaceFirst(listStr[i], helper)
-        }
+        if (listStr[i] == listStr[i + 1]) return counter
+        else counter += listStr[i].length + 1
     }
     return -1
 }
