@@ -134,8 +134,9 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val answer = StringBuilder()
-    if (phone.indexOf("(") + 1 == phone.indexOf(")")) return ""
-    if (Regex("""[^-+() 0123456789]""").containsMatchIn(input = phone)) return ""
+    if ((phone.indexOf("(") + 1 == phone.indexOf(")")) ||
+        (Regex("""[^-+() 0123456789]""").containsMatchIn(input = phone))
+    ) return ""
     if (phone.indexOf("+") == 0) answer.append("+")
     for (element in Regex("""\d+""").findAll(input = phone)) {
         answer.append(element.value)
@@ -153,7 +154,15 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    if (Regex("""[^-% 0123456789]""").containsMatchIn(input = jumps)) return -1
+    val searchMaxJump = Regex("""\d+""").findAll(jumps)
+    var maxJump = -1
+    for (element in searchMaxJump) {
+        if (element.value.toInt() > maxJump) maxJump = element.value.toInt()
+    }
+    return maxJump
+}
 
 /**
  * Сложная
@@ -166,7 +175,19 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    if (Regex("""[^-+% 0123456789]""").containsMatchIn(input = jumps)) return -1
+    val searchMaxJump = mutableListOf<String>()
+    searchMaxJump.addAll(Regex("""\+|\d+""").findAll(jumps).map { it.value })
+    var maxJump = -1
+    for (i in 0..searchMaxJump.size - 2) {
+        if (searchMaxJump[i].toIntOrNull() != null &&
+            searchMaxJump[i + 1] == "+" &&
+            searchMaxJump[i].toInt() > maxJump
+        ) maxJump = searchMaxJump[i].toInt()
+    }
+    return maxJump
+}
 
 /**
  * Сложная
