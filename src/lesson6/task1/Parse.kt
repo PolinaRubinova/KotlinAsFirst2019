@@ -135,10 +135,10 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val answer = StringBuilder()
     if ((phone.indexOf("(") + 1 == phone.indexOf(")")) ||
-        (Regex("""[^-+() 0123456789]""").containsMatchIn(input = phone))
+        (Regex("""[^-+() 0123456789]""").containsMatchIn(phone))
     ) return ""
     if (phone.indexOf("+") == 0) answer.append("+")
-    for (element in Regex("""\d+""").findAll(input = phone)) {
+    for (element in Regex("""\d+""").findAll(phone)) {
         answer.append(element.value)
     }
     return answer.toString()
@@ -155,7 +155,7 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    if (Regex("""[^-% 0123456789]""").containsMatchIn(input = jumps)) return -1
+    if (Regex("""[^-% 0123456789]""").containsMatchIn(jumps)) return -1
     val searchMaxJump = Regex("""\d+""").findAll(jumps)
     var maxJump = -1
     for (element in searchMaxJump) {
@@ -176,7 +176,7 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if (Regex("""[^-+% 0123456789]""").containsMatchIn(input = jumps)) return -1
+    if (Regex("""[^-+% 0123456789]""").containsMatchIn(jumps)) return -1
     val searchMaxJump = mutableListOf<String>()
     searchMaxJump.addAll(Regex("""\+|\d+""").findAll(jumps).map { it.value })
     var maxJump = -1
@@ -198,7 +198,21 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    if (Regex("""[^-+ 0123456789]""").containsMatchIn(expression)) return -1
+    val searchExpEl = mutableListOf<String>()
+    searchExpEl.addAll(Regex("""\+|-|\d+""").findAll(expression).map { it.value })
+    var answer = searchExpEl[0].toInt()
+    for (i in 1..searchExpEl.size - 2) {
+        if (i % 2 == 1) {
+            when (searchExpEl[i]) {
+                "+" -> answer += searchExpEl[i + 1].toInt()
+                "-" -> answer -= searchExpEl[i + 1].toInt()
+            }
+        }
+    }
+    return answer
+}
 
 /**
  * Сложная
