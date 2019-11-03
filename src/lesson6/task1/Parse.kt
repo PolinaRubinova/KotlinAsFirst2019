@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.lang.ArithmeticException
 
 /**
  * Пример
@@ -199,9 +200,9 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    if (expression == "") throw IllegalArgumentException()
     val searchExpEl = mutableListOf<String>()
     searchExpEl.addAll(Regex("""\+|-|\d+""").findAll(expression).map { it.value })
+    if (searchExpEl.isEmpty()) throw IllegalArgumentException()
     var answer = searchExpEl[0].toInt()
     for (i in 1..searchExpEl.size - 2) {
         if (i % 2 == 1) {
