@@ -275,7 +275,27 @@ fun mostExpensive(description: String): String {
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    if (Regex("""[^IVXLCDM]""").containsMatchIn(roman)) return -1
+    var romanMut = roman
+    val numbers = mapOf(
+        "CCM" to 800, "CM" to 900, "M" to 1000,
+        "DCC" to 700, "DC" to 600, "CCD" to 300, "CD" to 400, "D" to 500,
+        "XXC" to 80, "XC" to 90, "C" to 100,
+        "LXX" to 70, "LX" to 60, "XXL" to 30, "XL" to 40, "L" to 50,
+        "IIX" to 80, "IX" to 9, "X" to 10,
+        "VII" to 7, "VI" to 6, "IIV" to 3, "IV" to 4, "V" to 5,
+        "I" to 1
+    )
+    var answer = 0
+    for ((key, value) in numbers) {
+        if (key in romanMut) {
+            answer += ((romanMut.length - romanMut.replace(key, "").length) / key.length) * value
+            romanMut = romanMut.replace(key, "")
+        }
+    }
+    return answer
+}
 
 /**
  * Очень сложная
