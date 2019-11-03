@@ -276,7 +276,7 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    if (Regex("""[^IVXLCDM]""").containsMatchIn(roman)) return -1
+    if (Regex("""[^IVXLCDM]""").containsMatchIn(roman) || roman.isEmpty()) return -1
     var romanMut = roman
     val numbers = mapOf(
         "CCM" to 800, "CM" to 900, "M" to 1000,
