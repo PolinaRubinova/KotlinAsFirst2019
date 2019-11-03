@@ -200,16 +200,21 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    val searchExpEl = mutableListOf<String>()
-    searchExpEl.addAll(Regex("""\+|-|\d+""").findAll(expression).map { it.value })
-    if (searchExpEl.isEmpty()) throw IllegalArgumentException()
+    val searchExpEl = Regex("""[ ]""").split(expression)
+    if (!"$expression ".contains(Regex("""\d+""")) ||
+        Regex("""[^-+ 0123456789]""").containsMatchIn(expression) ||
+        Regex("""[^0123456789]""").containsMatchIn(searchExpEl[0])
+    ) throw IllegalArgumentException()
     var answer = searchExpEl[0].toInt()
-    for (i in 1..searchExpEl.size - 2) {
-        if (i % 2 == 1) {
+    for (i in 1 until searchExpEl.size) {
+        if (i % 2 == 1 && !Regex("""[^-+]""").containsMatchIn(searchExpEl[i])) {
             when (searchExpEl[i]) {
                 "+" -> answer += searchExpEl[i + 1].toInt()
                 "-" -> answer -= searchExpEl[i + 1].toInt()
+                else -> throw IllegalArgumentException()
             }
+        } else if (Regex("""[^0123456789]""").containsMatchIn(searchExpEl[i])) {
+            throw IllegalArgumentException()
         }
     }
     return answer
