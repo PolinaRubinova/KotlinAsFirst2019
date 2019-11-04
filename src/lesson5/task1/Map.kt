@@ -382,7 +382,45 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> { // ПЕРЕДЕЛАТЬ!!! НЕ РАБОТАЕТ!!!
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val result = mutableSetOf<String>()
+    var capacityMut = capacity
+    var treasuresSize = treasures.size
+    val names = mutableListOf<String>()
+    val weights = mutableListOf<Int>()
+    val prices = mutableListOf<Int>()
+
+    for ((key, value) in treasures) {
+        names.add(key)
+        weights.add(value.first)
+        prices.add((value.second))
+    }
+
+    val elements = MutableList(treasures.size + 1) { MutableList(capacity + 1) { 0 } }
+
+    for (i in 1..treasuresSize) {
+        for (j in 1..capacity) {
+            if (j >= weights[i - 1]) {
+                elements[i][j] = max(elements[i - 1][j], elements[i - 1][j - weights[i - 1]] + prices[i - 1])
+            } else {
+                elements[i][j] = elements[i - 1][j]
+            }
+        }
+    }
+
+    while (elements[treasuresSize][capacityMut] != 0) {
+        if (elements[treasuresSize][capacityMut] == elements[treasuresSize - 1][capacityMut]) {
+            treasuresSize--
+        } else {
+            treasuresSize--
+            capacityMut -= weights[treasuresSize]
+            result.add(names[treasuresSize])
+        }
+    }
+    return result
+}
+
+/*{
     var mutableCapacity = capacity
     val result = mutableSetOf<String>()
     val sortedTreasured = mutableMapOf<Set<String>, Pair<Int, Int>>()
@@ -399,4 +437,4 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         }
     }
     return result
-}
+}*/
