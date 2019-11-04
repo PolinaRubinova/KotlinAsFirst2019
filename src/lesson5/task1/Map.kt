@@ -247,7 +247,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val result = mutableSetOf<Char>()
     for (element in chars) result.add(element.toLowerCase())
-    return (stringToChars(word.toLowerCase()).keys.sorted() - result.sorted()).isEmpty()
+    return stringToChars(word.toLowerCase()).keys.union(result) == result
 }
 
 /**
@@ -389,15 +389,12 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val names = mutableListOf<String>()
     val weights = mutableListOf<Int>()
     val prices = mutableListOf<Int>()
-
     for ((key, value) in treasures) {
         names.add(key)
         weights.add(value.first)
         prices.add((value.second))
     }
-
     val elements = MutableList(treasures.size + 1) { MutableList(capacity + 1) { 0 } }
-
     for (i in 1..treasuresSize) {
         for (j in 1..capacity) {
             if (j >= weights[i - 1]) {
@@ -407,7 +404,6 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
-
     while (elements[treasuresSize][capacityMut] != 0) {
         if (elements[treasuresSize][capacityMut] == elements[treasuresSize - 1][capacityMut]) {
             treasuresSize--
