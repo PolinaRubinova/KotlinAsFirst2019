@@ -387,10 +387,10 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     var capacityMut = capacity
     var treasuresSize = treasures.size
     val names = mutableListOf<String>()
+    names.addAll(treasures.keys)
     val weights = mutableListOf<Int>()
     val prices = mutableListOf<Int>()
-    for ((key, value) in treasures) {
-        names.add(key)
+    for ((_, value) in treasures) {
         weights.add(value.first)
         prices.add((value.second))
     }
