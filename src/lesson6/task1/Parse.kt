@@ -4,6 +4,8 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 import java.lang.ArithmeticException
+import java.lang.IndexOutOfBoundsException
+import java.lang.NumberFormatException
 
 /**
  * Пример
@@ -136,11 +138,20 @@ fun flattenPhoneNumber(phone: String): String {
     val answer = StringBuilder()
     if (Regex("""[^-+() 0123456789]""").containsMatchIn(phone)) return ""
     if ("(" in phone || ")" in phone) {
-        if (("(" in phone && ")" !in phone) || (")" in phone && "(" !in phone) ||
-            !Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf("("), phone.indexOf(")")))
+        if (!("(" in phone && ")" in phone) ||
+            phone.filter { it == '(' }.length != phone.filter { it == ')' }.length ||
+            !Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf("("), phone.indexOf(")"))) ||
+            !Regex("""\d+""").containsMatchIn(phone.substring(0, phone.indexOf("("))) ||
+            !Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf(")"), phone.length - 1))
         ) return ""
     }
-    if (phone.indexOf("+") == 0 && phone.length != 1) answer.append("+")
+    if (phone.substring(1).indexOf("+") != -1) {
+        return ""
+    } else if (phone.indexOf("+") == 0) {
+        if (Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf("+")))) {
+            answer.append("+")
+        } else return ""
+    }
     for (element in Regex("""\d+""").findAll(phone)) {
         answer.append(element.value)
     }
@@ -183,13 +194,15 @@ fun bestHighJump(jumps: String): Int {
     val searchMaxJump = mutableListOf<String>()
     searchMaxJump.addAll(Regex("""\+|\d+""").findAll(jumps).map { it.value })
     var maxJump = -1
-    for (i in 0..searchMaxJump.size - 2) {
-        if (searchMaxJump[i].toIntOrNull() != null &&
-            searchMaxJump[i + 1] == "+" &&
-            searchMaxJump[i].toInt() > maxJump
-        ) maxJump = searchMaxJump[i].toInt()
+    for (i in 0 until searchMaxJump.size - 1) {
+        if (searchMaxJump[i + 1] == "+") {
+            if (searchMaxJump[i].toIntOrNull() != null) {
+                if (searchMaxJump[i].toInt() > maxJump) maxJump = searchMaxJump[i].toInt()
+            } else return -1
+        }
     }
     return maxJump
+
 }
 
 /**
@@ -208,16 +221,20 @@ fun plusMinus(expression: String): Int {
         Regex("""[^0123456789]""").containsMatchIn(searchExpEl[0])
     ) throw IllegalArgumentException()
     var answer = searchExpEl[0].toInt()
-    for (i in 1 until searchExpEl.size) {
-        if (i % 2 == 1 && !Regex("""[^-+]""").containsMatchIn(searchExpEl[i])) {
-            when (searchExpEl[i]) {
-                "+" -> answer += searchExpEl[i + 1].toInt()
-                "-" -> answer -= searchExpEl[i + 1].toInt()
-                else -> throw IllegalArgumentException()
+    try {
+        for (i in 1 until searchExpEl.size) {
+            if (i % 2 == 1 && !Regex("""[^-+]""").containsMatchIn(searchExpEl[i])) {
+                when (searchExpEl[i]) {
+                    "+" -> answer += searchExpEl[i + 1].toInt()
+                    "-" -> answer -= searchExpEl[i + 1].toInt()
+                    else -> throw IllegalArgumentException()
+                }
+            } else if (Regex("""[^0123456789]""").containsMatchIn(searchExpEl[i])) {
+                throw IllegalArgumentException()
             }
-        } else if (Regex("""[^0123456789]""").containsMatchIn(searchExpEl[i])) {
-            throw IllegalArgumentException()
         }
+    } catch (e: IndexOutOfBoundsException) {
+        throw IllegalArgumentException()
     }
     return answer
 }
@@ -256,12 +273,16 @@ fun mostExpensive(description: String): String {
     val goodsAndPrices = Regex("""[; ]""").split(description)
     if (goodsAndPrices.size < 2) return ""
     var nameMaxPrice = goodsAndPrices[0]
-    var maxPrice = goodsAndPrices[1].toDouble()
-    for (i in 4 until goodsAndPrices.size step 3) {
-        if (goodsAndPrices[i].toDouble() > maxPrice) {
-            nameMaxPrice = goodsAndPrices[i - 1]
-            maxPrice = goodsAndPrices[i].toDouble()
+    try {
+        var maxPrice = goodsAndPrices[1].toDouble()
+        for (i in 4 until goodsAndPrices.size step 3) {
+            if (goodsAndPrices[i].toDouble() > maxPrice) {
+                nameMaxPrice = goodsAndPrices[i - 1]
+                maxPrice = goodsAndPrices[i].toDouble()
+            }
         }
+    } catch (e: NumberFormatException) {
+        return ""
     }
     return nameMaxPrice
 }
