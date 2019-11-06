@@ -77,7 +77,6 @@ fun dateStrToDigit(str: String): String {
         "", "января", "февраля", "марта", "апреля", "мая", "июня",
         "июля", "августа", "сентября", "октября", "ноября", "декабря"
     )
-    //val helper =
     val parts = str.split(" ")
     if (parts.size != 3) return ""
     val day = parts[0].toIntOrNull() ?: return ""
@@ -135,9 +134,12 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     val answer = StringBuilder()
-    if ((phone.indexOf("(") + 1 == phone.indexOf(")")) ||
-        (Regex("""[^-+() 0123456789]""").containsMatchIn(phone))
-    ) return ""
+    if (Regex("""[^-+() 0123456789]""").containsMatchIn(phone)) return ""
+    if ("(" in phone || ")" in phone) {
+        if (("(" in phone && ")" !in phone) || (")" in phone && "(" !in phone) ||
+            !Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf("("), phone.indexOf(")")))
+        ) return ""
+    }
     if (phone.indexOf("+") == 0 && phone.length != 1) answer.append("+")
     for (element in Regex("""\d+""").findAll(phone)) {
         answer.append(element.value)

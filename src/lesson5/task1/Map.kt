@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+import lesson1.task1.seconds
 import java.nio.charset.CharsetEncoder
 import java.util.Collections.max
 import kotlin.math.max
@@ -177,9 +178,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     for ((key, value) in mapB + mapA) {
         val list = mutableListOf<String>()
         list.add(value)
-        if (mapB[key] != value) {
-            mapB[key]?.let { list.add(it) }
-        }
+        if (mapB[key] != value) mapB[key]?.let { list.add(it) }
         if (list.isNotEmpty()) result[key] = list.joinToString(separator = ", ")
     }
     return result
@@ -196,14 +195,17 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    val stocks = stockPrices.groupingBy { it.first }.eachCount()
     val result = mutableMapOf<String, Double>()
+    val stocks = stockPrices.groupingBy { it.first }.eachCount() as MutableMap
     for ((key, value) in stockPrices) {
-        if (stocks[key] != 1) {
-            result[key] =
-                stockPrices.filter { it.first == key }.sumByDouble { it.second } /
-                        (stocks[key])!!
-        } else result[key] = value
+        if (key in stocks) {
+            if (stocks[key] != 1) {
+                result[key] =
+                    stockPrices.filter { it.first == key }.sumByDouble { it.second } /
+                            (stocks[key])!!
+            } else result[key] = value
+            stocks.remove(key)
+        }
     }
     return result
 }
@@ -245,9 +247,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val result = mutableSetOf<Char>()
-    for (element in chars) result.add(element.toLowerCase())
-    return stringToChars(word.toLowerCase()).keys.union(result) == result
+    val result = chars.toSet().map { it.toLowerCase() }
+    return stringToChars(word.toLowerCase()).keys.all { it in result }
 }
 
 /**
@@ -355,7 +356,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val mapOfElAndInd = mutableMapOf<Int, Int>()
     for (i in 0 until list.size) {
         val j = mapOfElAndInd[list[i]]
-        if ((j != null) && (j != i)) return j to i
+        if (j != null) return j to i
         mapOfElAndInd[number - list[i]] = i
     }
     return -1 to -1
