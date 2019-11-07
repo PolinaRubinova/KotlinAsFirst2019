@@ -58,11 +58,11 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     substrings.forEach { result[it] = 0 }
     for (line in File(inputName).readLines().filter { it.isNotEmpty() }) {
         for ((key) in result) {
+            //val searcher = Regex("key").findAll(line).map { it.value }
             for (i in 0..line.length - key.length) {
                 if (line.substring(i, i + key.length).toLowerCase().contains(key.toLowerCase()))
                     result[key] = result[key]!! + 1
             }
-            //result[key] = value + (line.toLowerCase().length - line.toLowerCase().replace(key.toLowerCase(), "").length) / key.length
         }
     }
     return result
@@ -103,8 +103,23 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
+const val lineLength = 85
+
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        if (line.isNotEmpty()) {
+            val lineTrim = line.trim()
+            val ind = kotlin.math.floor(((lineLength - lineTrim.length) / 2).toDouble()).toInt()
+            for (i in 0 until ind) outputStream.write(" ")
+            outputStream.write(lineTrim)
+            outputStream.newLine()
+        } else {
+            for (i in 0 until kotlin.math.floor((lineLength / 2).toDouble()).toInt()) outputStream.write(" ")
+            outputStream.newLine()
+        }
+    }
+    outputStream.close()
 }
 
 /**
