@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import ru.spbstu.wheels.toMap
 import java.io.File
 
 /**
@@ -58,10 +59,10 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     substrings.forEach { result[it] = 0 }
     for (line in File(inputName).readLines().filter { it.isNotEmpty() }) {
         for ((key) in result) {
-            //val searcher = Regex("key").findAll(line).map { it.value }
             for (i in 0..line.length - key.length) {
-                if (line.substring(i, i + key.length).toLowerCase().contains(key.toLowerCase()))
+                if (line.substring(i, i + key.length).toLowerCase().contains(key.toLowerCase())) {
                     result[key] = result[key]!! + 1
+                }
             }
         }
     }
@@ -171,7 +172,22 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (line in File(inputName).readLines()) {
+        if (line.isNotEmpty()) {
+            (Regex("""[^A-zА-яёЁ]+""")).split(line).filter { it.isNotEmpty() }
+                .map { it.toLowerCase() }.forEach {
+                    if (it in result.keys) {
+                        result[it] = result[it]!! + 1
+                    } else {
+                        result[it] = 1
+                    }
+                }
+        }
+    }
+    return result.entries.sortedByDescending { (_, value) -> value }.take(20).toMap()
+}
 
 /**
  * Средняя
@@ -457,4 +473,3 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
 }
-
