@@ -281,9 +281,7 @@ fun stringToChars(str: String): Map<Char, Int> =
 
 fun hasAnagrams(words: List<String>): Boolean {
     val result = mutableSetOf<Map<Char, Int>>()
-    for (word in words) {
-        result.add(stringToChars(word))
-    }
+    words.forEach { result.add(stringToChars(it)) }
     return result.size != words.size
 }
 
