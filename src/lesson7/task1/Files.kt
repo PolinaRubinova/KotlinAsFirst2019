@@ -88,6 +88,7 @@ fun sibilants(inputName: String, outputName: String) {
     val exceptions = listOf("жюри", "брошюра", "парашют")
     val letters = listOf('ж', 'ч', 'ш', 'щ', 'Ж', 'Ч', 'Ш', 'Щ')
     var check: Boolean
+    var word: String
     val mistakes = mapOf(
         'ы' to 'и',
         'я' to 'а',
@@ -101,18 +102,21 @@ fun sibilants(inputName: String, outputName: String) {
         for (i in 0 until splitLine.size) {
             if (splitLine[i] !in exceptions) {
                 check = true
-                for (j in 0 until splitLine[i].length - 1) {
-                    if (splitLine[i][j] in letters && splitLine[i][j + 1] in mistakes.keys) {
-                        outputStream.write(
-                            splitLine[i].replace(
-                                splitLine[i][j] + splitLine[i][j + 1].toString(),
-                                splitLine[i][j] + mistakes[splitLine[i][j + 1]].toString()
-                            )
+                word = splitLine[i]
+                for (j in 0 until word.length - 1) {
+                    if (word[j] in letters && word[j + 1] in mistakes.keys) {
+                        word = word.replace(
+                            word[j] + word[j + 1].toString(),
+                            word[j] + mistakes[word[j + 1]].toString()
                         )
                         check = false
                     }
                 }
-                if (check) outputStream.write(splitLine[i])
+                if (check) {
+                    outputStream.write(splitLine[i])
+                } else {
+                    outputStream.write(word)
+                }
             }
             if (i != splitLine.size - 1) outputStream.write(" ")
         }
@@ -138,12 +142,8 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
-fun centerFile(inputName: String, outputName: String) {
+fun centerFile(inputName: String, outputName: String) { //ПЕРЕДЕЛАТЬ!
     val outputStream = File(outputName).bufferedWriter()
-    if (File(inputName).readLines().size == 1) {
-        outputStream.write(File(inputName).readLines()[0])
-        outputStream.close()
-    }
     var maxLength = 0
     File(inputName).readLines().forEach {
         if (it.length > maxLength) maxLength = it.length
@@ -190,12 +190,8 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
-fun alignFileByWidth(inputName: String, outputName: String) {
+fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛАТЬ!
     val outputStream = File(outputName).bufferedWriter()
-    if (File(inputName).readLines().size == 1) {
-        outputStream.write(File(inputName).readLines()[0])
-        outputStream.close()
-    }
     var maxLength = 0
     var wordsList: List<String>
     var wordsLength: Int
