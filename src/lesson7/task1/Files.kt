@@ -105,8 +105,8 @@ fun sibilants(inputName: String, outputName: String) {
                     if (splitLine[i][j] in letters && splitLine[i][j + 1] in mistakes.keys) {
                         outputStream.write(
                             splitLine[i].replace(
-                                splitLine[i][j + 1],
-                                mistakes[splitLine[i][j + 1]] ?: error("")
+                                splitLine[i][j] + splitLine[i][j + 1].toString(),
+                                splitLine[i][j] + mistakes[splitLine[i][j + 1]].toString()
                             )
                         )
                         check = false
@@ -140,6 +140,10 @@ fun sibilants(inputName: String, outputName: String) {
  */
 fun centerFile(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
+    if (File(inputName).readLines().size == 1) {
+        outputStream.write(File(inputName).readLines()[0])
+        outputStream.close()
+    }
     var maxLength = 0
     File(inputName).readLines().forEach {
         if (it.length > maxLength) maxLength = it.length
@@ -189,7 +193,7 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
     if (File(inputName).readLines().size == 1) {
-        outputStream.write(inputName)
+        outputStream.write(File(inputName).readLines()[0])
         outputStream.close()
     }
     var maxLength = 0
