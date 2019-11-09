@@ -146,7 +146,7 @@ fun centerFile(inputName: String, outputName: String) { //ПЕРЕДЕЛАТЬ!
     val outputStream = File(outputName).bufferedWriter()
     var maxLength = 0
     File(inputName).readLines().forEach {
-        if (it.length > maxLength) maxLength = it.length
+        if (it.trim().length > maxLength) maxLength = it.trim().length
     }
     var lineTrim: String
     for (line in File(inputName).readLines()) {
