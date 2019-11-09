@@ -142,7 +142,7 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
-fun centerFile(inputName: String, outputName: String) { //ПЕРЕДЕЛАТЬ!
+fun centerFile(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
     var maxLength = 0
     File(inputName).readLines().forEach {
@@ -199,7 +199,7 @@ fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛА
         if (it.length > maxLength) maxLength = it.length
     }
     for (line in File(inputName).readLines()) {
-        wordsLength = 2
+        wordsLength = 2                                                             //???
         wordsList = Regex("""\s+""").split(line.trim())
         if (line.replace(" ", "").isNotEmpty()) {
             wordsList.forEach { wordsLength += it.length }
