@@ -142,17 +142,17 @@ const val lineLength = 85
 
 fun centerFile(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
+    var lineTrim: String
     for (line in File(inputName).readLines()) {
         if (line.isNotEmpty()) {
-            val lineTrim = line.trim()
+            lineTrim = line.trim()
             val ind = kotlin.math.floor(((lineLength - lineTrim.length) / 2).toDouble()).toInt()
             for (i in 0 until ind) outputStream.write(" ")
             outputStream.write(lineTrim)
-            outputStream.newLine()
         } else {
             for (i in 0 until kotlin.math.floor((lineLength / 2).toDouble()).toInt()) outputStream.write(" ")
-            outputStream.newLine()
         }
+        outputStream.newLine()
     }
     outputStream.close()
 }
@@ -178,14 +178,50 @@ fun centerFile(inputName: String, outputName: String) {
  * 6) Число пробелов между более левой парой соседних слов должно быть больше или равно числу пробелов
  *    между более правой парой соседних слов.
  *
- * Следует учесть, что входной файл может содержать последовательности из нескольких пробелов  между слвоами. Такие
+ * Следует учесть, что входной файл может содержать последовательности из нескольких пробелов  между словами. Такие
  * последовательности следует учитывать при выравнивании и при необходимости избавляться от лишних пробелов.
  * Из этого следуют следующие правила:
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    var maxLength = 0
+    var wordsList: List<String>
+    var wordsLength: Int
+    File(inputName).readLines().forEach {
+        if (it.length > maxLength) maxLength = it.length
+    }
+    for (line in File(inputName).readLines()) {
+        wordsLength = 2
+        wordsList = Regex("""\s+""").split(line.trim())
+        if (line.replace(" ", "").isNotEmpty()) {
+            wordsList.forEach { wordsLength += it.length }
+            outputStream.write(wordsList[0])
+            if (wordsList.size != 1) {
+                val counter = (maxLength - wordsLength) / (wordsList.size - 1).toDouble()
+                if (counter % 1 == 0.0) {
+                    for (i in 1 until wordsList.size) {
+                        for (j in 0 until counter.toInt()) outputStream.write(" ")
+                        outputStream.write(wordsList[i])
+                    }
+                } else {
+                    var exception = (maxLength - wordsLength) % (wordsList.size - 1)
+                    for (i in 1 until wordsList.size) {
+                        if (exception != 0) {
+                            for (j in 0 until counter.toInt() + 1) outputStream.write(" ")
+                            exception--
+                        } else {
+                            for (j in 0 until counter.toInt()) outputStream.write(" ")
+                        }
+                        outputStream.write(wordsList[i])
+                    }
+                }
+            }
+        }
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**
