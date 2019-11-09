@@ -138,19 +138,21 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
-const val lineLength = 85
-
 fun centerFile(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
+    var maxLength = 0
+    File(inputName).readLines().forEach {
+        if (it.length > maxLength) maxLength = it.length
+    }
     var lineTrim: String
     for (line in File(inputName).readLines()) {
         if (line.isNotEmpty()) {
             lineTrim = line.trim()
-            val ind = kotlin.math.floor(((lineLength - lineTrim.length) / 2).toDouble()).toInt()
+            val ind = kotlin.math.floor(((maxLength - lineTrim.length) / 2).toDouble()).toInt()
             for (i in 0 until ind) outputStream.write(" ")
             outputStream.write(lineTrim)
         } else {
-            for (i in 0 until kotlin.math.floor((lineLength / 2).toDouble()).toInt()) outputStream.write(" ")
+            for (i in 0 until kotlin.math.floor((maxLength / 2).toDouble()).toInt()) outputStream.write(" ")
         }
         outputStream.newLine()
     }
@@ -186,6 +188,10 @@ fun centerFile(inputName: String, outputName: String) {
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
+    if (File(inputName).readLines().size == 1) {
+        outputStream.write(inputName)
+        outputStream.close()
+    }
     var maxLength = 0
     var wordsList: List<String>
     var wordsLength: Int
