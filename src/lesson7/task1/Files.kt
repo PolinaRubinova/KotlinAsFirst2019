@@ -200,7 +200,7 @@ fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛА
     }
     for (line in File(inputName).readLines()) {
         if (File(inputName).readLines().size == 1) {
-            outputStream.write(line)
+            outputStream.write(line.trim())
             outputStream.close()
             break
         }
