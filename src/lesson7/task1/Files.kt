@@ -190,7 +190,7 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
-fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛАТЬ!
+fun alignFileByWidth(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
     var maxLength = 0
     var wordsList: List<String>
