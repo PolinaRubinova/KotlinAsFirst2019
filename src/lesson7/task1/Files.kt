@@ -199,6 +199,10 @@ fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛА
         if (it.length > maxLength) maxLength = it.length
     }
     for (line in File(inputName).readLines()) {
+        if (File(inputName).readLines().size == 1) {
+            outputStream.write(line)
+            outputStream.close()
+        }
         wordsLength = 2                                                             //???
         wordsList = Regex("""\s+""").split(line.trim())
         if (line.replace(" ", "").isNotEmpty()) {
@@ -330,18 +334,14 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
-    var result = mutableMapOf<String, Int>()
+    val result = mutableMapOf<String, Int>()
     File(inputName).readLines().forEach {
-        result[it] = it.toLowerCase().toSet().size
-    }
-    result = result.filter { it.value == result.values.max() }
-            as MutableMap<String, Int>
-    result.forEach {
-        outputStream.write(it.key)
-        if (it.key != result.keys.last()) {
-            outputStream.write(", ")
+        if (it.length == it.toLowerCase().toSet().size) {
+            result[it] = it.toLowerCase().toSet().size
         }
     }
+    outputStream.write(result.filter { it.value == result.values.max() }
+        .keys.joinToString(", "))
     outputStream.close()
 }
 
