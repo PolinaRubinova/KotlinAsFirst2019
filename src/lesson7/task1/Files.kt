@@ -202,6 +202,7 @@ fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛА
         if (File(inputName).readLines().size == 1) {
             outputStream.write(line)
             outputStream.close()
+            break
         }
         wordsLength = 2                                                             //???
         wordsList = Regex("""\s+""").split(line.trim())
