@@ -204,7 +204,7 @@ fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛА
             outputStream.close()
             break
         }
-        wordsLength = 2                                                             //???
+        wordsLength = 2                                                            //???
         wordsList = Regex("""\s+""").split(line.trim())
         if (line.replace(" ", "").isNotEmpty()) {
             wordsList.forEach { wordsLength += it.length }
