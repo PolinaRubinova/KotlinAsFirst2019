@@ -196,37 +196,25 @@ fun alignFileByWidth(inputName: String, outputName: String) { //ПЕРЕДЕЛА
     var wordsList: List<String>
     var wordsLength: Int
     File(inputName).readLines().forEach {
-        if (it.length > maxLength) maxLength = it.length
+        if (it.trim().length > maxLength) maxLength = it.trim().length
     }
     for (line in File(inputName).readLines()) {
-        //if (File(inputName).readLines().size == 1) {
-        //    outputStream.write(line.trim())
-        //    outputStream.close()
-        //    break
-        //}
-        wordsLength = 2                                                            //???
-        wordsList = Regex("""\s+""").split(line.trim())
+        wordsLength = 0
         if (line.replace(" ", "").isNotEmpty()) {
+            wordsList = Regex("""\s+""").split(line.trim())
             wordsList.forEach { wordsLength += it.length }
             outputStream.write(wordsList[0])
-            if (wordsList.size != 1) {
+            if (wordsList.size > 1) {
                 val counter = (maxLength - wordsLength) / (wordsList.size - 1).toDouble()
-                if (counter % 1 == 0.0) {
-                    for (i in 1 until wordsList.size) {
+                var exception = (maxLength - wordsLength) % (wordsList.size - 1)
+                for (i in 1 until wordsList.size) {
+                    if (exception > 0) {
+                        for (j in 0 until counter.toInt() + 1) outputStream.write(" ")
+                        exception--
+                    } else {
                         for (j in 0 until counter.toInt()) outputStream.write(" ")
-                        outputStream.write(wordsList[i])
                     }
-                } else {
-                    var exception = (maxLength - wordsLength) % (wordsList.size - 1)
-                    for (i in 1 until wordsList.size) {
-                        if (exception != 0) {
-                            for (j in 0 until counter.toInt() + 1) outputStream.write(" ")
-                            exception--
-                        } else {
-                            for (j in 0 until counter.toInt()) outputStream.write(" ")
-                        }
-                        outputStream.write(wordsList[i])
-                    }
+                    outputStream.write(wordsList[i])
                 }
             }
         }
