@@ -4,6 +4,7 @@ package lesson7.task1
 
 import ru.spbstu.wheels.toMap
 import java.io.File
+import kotlin.math.pow
 
 /**
  * Пример
@@ -554,6 +555,60 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
+fun signOfNum(hv: Int): Int = if (hv < 0) -1
+else 1
+
+fun intToList(hv: Int): MutableList<Int> {
+    var number = hv
+    val result = mutableListOf<Int>()
+    while (number != 0) {
+        result.add(0, number % 10)
+        number /= 10
+    }
+    return result
+}
+
+
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
+    /*
+    val outputStream = File(outputName).bufferedWriter()
+    outputStream.write(" $lhv | $rhv")
+    outputStream.newLine()
+    val signLhv = signOfNum(lhv) //цнак делимого
+    val signRhv = signOfNum(rhv) //знако делителя
+    val listLhv = intToList(lhv * signLhv) //список цифр делимого
+    val listRhv = intToList(rhv * signRhv) //список цифр делителя
+    var dividend: Int //делимое
+    val divider = rhv * signRhv //делитель
+    //var quotient: Int //частное
+    var modulo: Int //остаток от деления
+
+    //while (listLhv.size > 0) {
+    dividend = 0
+    for (j in 0 until listRhv.size) {
+        dividend = dividend * 10 + listLhv[j]
+        if (j == listLhv.size - 1) break
+    }
+    if (dividend % divider != 0 && listRhv.size < listLhv.size) dividend = dividend * 10 + listLhv[listRhv.size]
+    modulo = dividend % divider
+    outputStream.write("-")
+    outputStream.write((dividend - modulo).toString())
+
+    for (j in 0 until " $lhv | $rhv".length - "-$dividend".length - "$rhv".length) outputStream.write(" ")
+    outputStream.write((lhv / rhv).toString())
+    outputStream.newLine()
+
+    for (j in 0 until "-$dividend".length) outputStream.write("-")
+    outputStream.newLine()
+
+    for (j in 0 until "$dividend".length - "$modulo".length) outputStream.write(" ")
+    outputStream.write(modulo.toString())
+
+
+    //for (j in 0 until "$dividend".length) listLhv.removeAt(0)
+    //}
+
+    outputStream.close()
+     */
 }
