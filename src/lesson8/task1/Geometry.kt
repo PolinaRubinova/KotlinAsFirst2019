@@ -4,10 +4,7 @@ package lesson8.task1
 
 import lesson1.task1.sqr
 import java.lang.Math.atan
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Точка на плоскости
@@ -175,7 +172,7 @@ class Line private constructor(val b: Double, val angle: Double) {
 fun lineBySegment(s: Segment): Line {
     var angle = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
     angle = when {
-        angle < 1e-5 -> 0.0
+        abs(angle) < 1e-5 -> 0.0
         angle < 0.0 -> angle + PI
         else -> angle
     }
