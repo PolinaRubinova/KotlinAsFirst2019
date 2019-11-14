@@ -386,7 +386,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlSimple(inputName: String, outputName: String) {
+fun markdownToHtmlSimple(inputName: String, outputName: String) { //ПЕРЕДЕЛАТЬ!!!
     val outputStream = File(outputName).bufferedWriter()
     val replacement = mapOf(
         "**" to Pair("<b>", "</b>"),
@@ -398,7 +398,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var modLine: String
     outputStream.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) {
+        if (line.trim().isEmpty()) {
             outputStream.write("</p><p>")
         } else {
             modLine = line

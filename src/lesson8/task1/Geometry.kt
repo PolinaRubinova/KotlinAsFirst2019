@@ -3,6 +3,7 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
+import java.lang.Math.atan
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -171,14 +172,22 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line {
+    var angle = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
+    angle = when {
+        angle < 1e-5 -> 0.0
+        angle < 0.0 -> angle + PI
+        else -> angle
+    }
+    return Line(s.begin, angle)
+}
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 
 /**
  * Сложная

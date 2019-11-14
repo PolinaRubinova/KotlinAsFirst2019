@@ -141,14 +141,10 @@ fun flattenPhoneNumber(phone: String): String {
     if ("(" in phone || ")" in phone) {
         if (!("(" in phone && ")" in phone) ||
             phone.filter { it == '(' }.length != phone.filter { it == ')' }.length ||
-            !Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf("("), phone.indexOf(")"))) ||
-            !Regex("""\d+""").containsMatchIn(phone.substring(0, phone.indexOf("("))) ||
-            !Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf(")"), phone.length - 1))
+            !Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf("("), phone.indexOf(")")))
         ) return ""
     }
-    if (phone.substring(1).indexOf("+") != -1) {
-        return ""
-    } else if (phone.indexOf("+") == 0) {
+    if (phone.indexOf("+") == 0) {
         if (Regex("""\d+""").containsMatchIn(phone.substring(phone.indexOf("+")))) {
             answer.append("+")
         } else return ""
