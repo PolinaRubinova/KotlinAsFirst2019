@@ -191,7 +191,19 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    TODO()
+    /*
+    var angle = atan((b.y - a.y) / (b.x - a.x))
+    angle = when {
+        abs(angle) < 1e-5 -> 0.0
+        angle < 0.0 -> angle + PI
+        else -> angle
+    }
+    val center = Point((b.y - a.y) / 2, (b.x - a.x) / 2)
+    return Line(center, angle + PI / 2)
+     */
+}
 
 /**
  * Средняя
@@ -199,7 +211,20 @@ fun bisectorByPoints(a: Point, b: Point): Line = TODO()
  * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
  * Если в списке менее двух окружностей, бросить IllegalArgumentException
  */
-fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
+fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
+    if (circles.size < 2) throw IllegalArgumentException()
+    var minDistance = Double.MAX_VALUE
+    var answer: Pair<Circle, Circle>? = null
+    for (i in 0 until circles.size - 1) {
+        for (j in i + 1 until circles.size) {
+            if (circles[i].distance(circles[j]) < minDistance) {
+                minDistance = circles[i].distance(circles[j])
+                answer = circles[i] to circles[j]
+            }
+        }
+    }
+    return answer!!
+}
 
 /**
  * Сложная

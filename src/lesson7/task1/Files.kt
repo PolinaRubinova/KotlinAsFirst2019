@@ -396,10 +396,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) { //ПЕРЕДЕ
     val stackBI = Stack<String>()
     var checkBI: Boolean
     var modLine: String
-    outputStream.write("<html><body><p>")
+    outputStream.write("<html>\n<body>\n<p>\n")
     for (line in File(inputName).readLines()) {
         if (line.trim().isEmpty()) {
-            outputStream.write("</p><p>")
+            outputStream.write("\n</p>\n<p>\n")
         } else {
             modLine = line
             checkBI = false
@@ -419,7 +419,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) { //ПЕРЕДЕ
             else outputStream.write(line)
         }
     }
-    outputStream.write("</p></body></html>")
+    outputStream.write("\n</p>\n</body>\n</html>")
     outputStream.close()
 }
 
