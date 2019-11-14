@@ -2,9 +2,6 @@
 
 package lesson5.task1
 
-import lesson1.task1.seconds
-import java.nio.charset.CharsetEncoder
-import java.util.Collections.max
 import kotlin.math.max
 
 /**
@@ -196,16 +193,8 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val result = mutableMapOf<String, Double>()
-    val stocks = stockPrices.groupingBy { it.first }.eachCount() as MutableMap
-    for ((key, value) in stockPrices) {
-        if (key in stocks) {
-            if (stocks[key] != 1) {
-                result[key] =
-                    stockPrices.filter { it.first == key }.sumByDouble { it.second } /
-                            (stocks[key])!!
-            } else result[key] = value
-            stocks.remove(key)
-        }
+    stockPrices.groupBy({ it.first }, { it.second }).forEach {
+        result[it.key] = it.value.sum() / it.value.size
     }
     return result
 }
@@ -248,7 +237,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val result = chars.toSet().map { it.toLowerCase() }
-    return stringToChars(word.toLowerCase()).keys.all { it in result }
+    return word.toLowerCase().toSet().all { it in result }
 }
 
 /**

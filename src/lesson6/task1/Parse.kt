@@ -313,7 +313,7 @@ fun fromRoman(roman: String): Int {
             count++
         }
         if (count < roman.length && roman[i] in pairs.keys &&
-            roman[count] in pairs[roman[i]] ?: error("")
+            roman[count] in pairs[roman[i]] ?: error(-1)
         ) {
             answer += numbers[romans.indexOf(roman[count])] -
                     numbers[romans.indexOf(roman[i])] * (count - i)
