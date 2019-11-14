@@ -4,7 +4,7 @@ package lesson7.task1
 
 import ru.spbstu.wheels.toMap
 import java.io.File
-import kotlin.math.pow
+import java.util.Stack
 
 /**
  * Пример
@@ -387,7 +387,40 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    val replacement = mapOf(
+        "**" to Pair("<b>", "</b>"),
+        "*" to Pair("<i>", "</i>"),
+        "~~" to Pair("<s>", "</s>")
+    )
+    val stackBI = Stack<String>()
+    var checkBI: Boolean
+    var modLine: String
+    outputStream.write("<html><body><p>")
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty()) {
+            outputStream.write("</p><p>")
+        } else {
+            modLine = line
+            checkBI = false
+            for ((key, value) in replacement) {
+                while (key in modLine) {
+                    checkBI = true
+                    if (stackBI.isNotEmpty() && key == stackBI.peek()) {
+                        modLine = modLine.replaceFirst(key, value.second)
+                        stackBI.pop()
+                    } else {
+                        modLine = modLine.replaceFirst(key, value.first)
+                        stackBI.push(key)
+                    }
+                }
+            }
+            if (checkBI) outputStream.write(modLine)
+            else outputStream.write(line)
+        }
+    }
+    outputStream.write("</p></body></html>")
+    outputStream.close()
 }
 
 /**
