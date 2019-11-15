@@ -283,7 +283,9 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    if (Regex("""[^IVXLCDM]""").containsMatchIn(roman) || roman.isEmpty()) return -1
+    if (Regex("""[^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})${'$'}]""")
+            .containsMatchIn(roman) || roman.isEmpty()
+    ) return -1
     val pairs = mapOf(
         'C' to listOf('M', 'D'),
         'X' to listOf('C', 'L'),
@@ -294,11 +296,14 @@ fun fromRoman(roman: String): Int {
     var count: Int
     var answer = 0
     var i = 0
+    var position = 0
+    var checkPosition: Int
+
     while (i < roman.length) {
+        checkPosition = romans.indexOf(roman[i])
+        if (checkPosition < position) return -1
         count = i
-        while (count < roman.length && roman[count] == roman[i]) {
-            count++
-        }
+        while (count < roman.length && roman[count] == roman[i]) count++
         if (count < roman.length && roman[i] in pairs.keys &&
             roman[count] in pairs[roman[i]] ?: error(-1)
         ) {
@@ -308,6 +313,7 @@ fun fromRoman(roman: String): Int {
         } else {
             answer += numbers[romans.indexOf(roman[i])] * (count - i)
         }
+        position = romans.indexOf(roman[i])
         i = count
     }
     return answer
