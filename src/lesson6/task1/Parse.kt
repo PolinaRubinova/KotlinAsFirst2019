@@ -180,7 +180,7 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int {
+fun bestHighJump(jumps: String): Int { //ПЕРЕДЕЛАТЬ!
     if (Regex("""[^-+% 0123456789]""").containsMatchIn(jumps)) return -1
     val searchMaxJump = mutableListOf<String>()
     searchMaxJump.addAll(Regex("""\+|\d+""").findAll(jumps).map { it.value })
