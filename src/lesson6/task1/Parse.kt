@@ -71,11 +71,12 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+val months = listOf(
+    "", "января", "февраля", "марта", "апреля", "мая", "июня",
+    "июля", "августа", "сентября", "октября", "ноября", "декабря"
+)
+
 fun dateStrToDigit(str: String): String {
-    val months = listOf(
-        "", "января", "февраля", "марта", "апреля", "мая", "июня",
-        "июля", "августа", "сентября", "октября", "ноября", "декабря"
-    )
     val parts = str.split(" ")
     if (parts.size != 3) return ""
     val day = parts[0].toIntOrNull() ?: return ""
@@ -99,10 +100,6 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val months = listOf(
-        "", "января", "февраля", "марта", "апреля", "мая", "июня",
-        "июля", "августа", "сентября", "октября", "ноября", "декабря"
-    )
     val parts = digital.split(".")
     if (parts.size != 3) return ""
     val day = parts[0].toIntOrNull() ?: return ""
@@ -210,25 +207,22 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     val searchExpEl = Regex("""[ ]""").split(expression)
+    if (searchExpEl.size % 2 == 0) throw IllegalArgumentException()
     if (!"$expression ".contains(Regex("""\d+""")) ||
         Regex("""[^-+ 0123456789]""").containsMatchIn(expression) ||
         Regex("""[^0123456789]""").containsMatchIn(searchExpEl[0])
     ) throw IllegalArgumentException()
     var answer = searchExpEl[0].toInt()
-    try {
-        for (i in 1 until searchExpEl.size) {
-            if (i % 2 == 1 && !Regex("""[^-+]""").containsMatchIn(searchExpEl[i])) {
-                when (searchExpEl[i]) {
-                    "+" -> answer += searchExpEl[i + 1].toInt()
-                    "-" -> answer -= searchExpEl[i + 1].toInt()
-                    else -> throw IllegalArgumentException()
-                }
-            } else if (Regex("""[^0123456789]""").containsMatchIn(searchExpEl[i])) {
-                throw IllegalArgumentException()
+    for (i in 1 until searchExpEl.size) {
+        if (i % 2 == 1 && !Regex("""[^-+]""").containsMatchIn(searchExpEl[i])) {
+            when (searchExpEl[i]) {
+                "+" -> answer += searchExpEl[i + 1].toIntOrNull() ?: throw IllegalArgumentException()
+                "-" -> answer -= searchExpEl[i + 1].toIntOrNull() ?: throw IllegalArgumentException()
+                else -> throw IllegalArgumentException()
             }
+        } else if (Regex("""[^0123456789]""").containsMatchIn(searchExpEl[i])) {
+            throw IllegalArgumentException()
         }
-    } catch (e: IndexOutOfBoundsException) {
-        throw IllegalArgumentException()
     }
     return answer
 }
@@ -267,16 +261,12 @@ fun mostExpensive(description: String): String {
     val goodsAndPrices = Regex("""[; ]""").split(description)
     if (goodsAndPrices.size < 2) return ""
     var nameMaxPrice = goodsAndPrices[0]
-    try {
-        var maxPrice = goodsAndPrices[1].toDouble()
-        for (i in 4 until goodsAndPrices.size step 3) {
-            if (goodsAndPrices[i].toDouble() > maxPrice) {
-                nameMaxPrice = goodsAndPrices[i - 1]
-                maxPrice = goodsAndPrices[i].toDouble()
-            }
+    var maxPrice = goodsAndPrices[1].toDoubleOrNull() ?: return ""
+    for (i in 4 until goodsAndPrices.size step 3) {
+        if (goodsAndPrices[i].toDouble() > maxPrice) {
+            nameMaxPrice = goodsAndPrices[i - 1]
+            maxPrice = goodsAndPrices[i].toDoubleOrNull() ?: return ""
         }
-    } catch (e: NumberFormatException) {
-        return ""
     }
     return nameMaxPrice
 }
