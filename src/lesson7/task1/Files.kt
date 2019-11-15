@@ -398,7 +398,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) { //ПЕРЕДЕ
     var modLine: String
     outputStream.write("<html>\n<body>\n<p>\n")
     for (line in File(inputName).readLines()) {
-        if (line.trim().isEmpty()) {
+        if (line == "\n" || line.isEmpty()) {
             outputStream.write("\n</p>\n<p>\n")
         } else {
             modLine = line

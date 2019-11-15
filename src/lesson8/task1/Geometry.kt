@@ -173,7 +173,7 @@ fun lineBySegment(s: Segment): Line {
     var angle = atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x))
     angle = when {
         abs(angle) < 1e-5 -> 0.0
-        angle < 0.0 -> angle + PI
+        angle <= 0.0 -> angle + PI
         else -> angle
     }
     return Line(s.begin, angle)
@@ -197,7 +197,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
     var angle = atan((b.y - a.y) / (b.x - a.x))
     angle = when {
         abs(angle) < 1e-5 -> 0.0
-        angle < 0.0 -> angle + PI
+        angle <= 0.0 -> angle + PI
         else -> angle
     }
     val center = Point((b.y - a.y) / 2, (b.x - a.x) / 2)
