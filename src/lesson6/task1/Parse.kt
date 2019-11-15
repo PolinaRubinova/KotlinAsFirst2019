@@ -298,7 +298,6 @@ fun fromRoman(roman: String): Int {
     var i = 0
     var position = 0
     var checkPosition: Int
-
     while (i < roman.length) {
         checkPosition = romans.indexOf(roman[i])
         if (checkPosition < position) return -1
@@ -307,6 +306,7 @@ fun fromRoman(roman: String): Int {
         if (count < roman.length && roman[i] in pairs.keys &&
             roman[count] in pairs[roman[i]] ?: error(-1)
         ) {
+            if (count - i >= 2) return -1
             answer += numbers[romans.indexOf(roman[count])] -
                     numbers[romans.indexOf(roman[i])] * (count - i)
             count++
