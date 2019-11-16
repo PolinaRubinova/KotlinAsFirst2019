@@ -180,20 +180,19 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int { //ПЕРЕДЕЛАТЬ!
+fun bestHighJump(jumps: String): Int {
     if (Regex("""[^-+% 0123456789]""").containsMatchIn(jumps)) return -1
     val searchMaxJump = mutableListOf<String>()
-    searchMaxJump.addAll(Regex("""\+|\d+""").findAll(jumps).map { it.value })
+    searchMaxJump.addAll(Regex("""-|%|\+|\d+""").findAll(jumps).map { it.value.trim() })
     var maxJump = -1
     for (i in 0 until searchMaxJump.size - 1) {
         if (searchMaxJump[i + 1] == "+") {
-            if (searchMaxJump[i].toIntOrNull() != null) {
-                if (searchMaxJump[i].toInt() > maxJump) maxJump = searchMaxJump[i].toInt()
-            } else return -1
+            if (searchMaxJump[i].toIntOrNull() != null && searchMaxJump[i].toInt() > maxJump) {
+                maxJump = searchMaxJump[i].toInt()
+            }
         }
     }
     return maxJump
-
 }
 
 /**
