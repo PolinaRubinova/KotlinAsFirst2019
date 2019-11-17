@@ -3,7 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import kotlin.math.floor
+import java.util.*
 
 /**
  * Пример
@@ -380,6 +380,15 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (Regex("""[^-+ \[\]<>]""").containsMatchIn(commands) ||
         commands.filter { it == '[' }.length != commands.filter { it == ']' }.length
     ) throw IllegalArgumentException()
+    val bracketsCheck = Stack<Char>()
+    commands.forEach {
+        if (it == '[') bracketsCheck.push(it)
+        else if (it == ']') {
+            if (bracketsCheck.isNotEmpty() && bracketsCheck.peek() == '[') bracketsCheck.pop()
+            else throw IllegalArgumentException()
+        }
+    }
+    if (bracketsCheck.isNotEmpty()) throw IllegalArgumentException()
     val result = MutableList(cells) { 0 }
     var position = cells / 2
     var limitMut = limit
