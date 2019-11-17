@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import kotlin.math.floor
 
 /**
  * Пример
@@ -354,4 +355,52 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun findNextCommand(count: Int, commands: String, openingOrClosingBracket: Boolean): Int {
+    var nextCount = count
+    val target = if (openingOrClosingBracket) ']'
+    else '['
+    while (commands[nextCount] != target) {
+        if (openingOrClosingBracket) {
+            if (commands[nextCount] == '[') {
+                nextCount = findNextCommand(nextCount + 1, commands, true)
+            }
+            nextCount++
+        } else {
+            if (commands[nextCount] == ']') {
+                nextCount = findNextCommand(nextCount - 1, commands, false)
+            }
+            nextCount--
+        }
+    }
+    return nextCount
+}
+
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    if (Regex("""[^-+ \[\]<>]""").containsMatchIn(commands) ||
+        commands.filter { it == '[' }.length != commands.filter { it == ']' }.length
+    ) throw IllegalArgumentException()
+    val result = MutableList(cells) { 0 }
+    var position = cells / 2
+    var limitMut = limit
+    var count = 0
+    while (limitMut > 0 && count < commands.length) {
+        if (commands[count] != ' ') {
+            when (commands[count]) {
+                '+' -> result[position]++
+                '-' -> result[position]--
+                '>' -> position++
+                '<' -> position--
+                '[' -> if (result[position] == 0) {
+                    count = findNextCommand(count + 1, commands, true)
+                }
+                ']' -> if (result[position] != 0) {
+                    count = findNextCommand(count - 1, commands, false)
+                }
+            }
+            if (position !in 0 until cells) throw IllegalStateException()
+        }
+        count++
+        limitMut--
+    }
+    return result
+}
