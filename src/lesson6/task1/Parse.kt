@@ -354,19 +354,19 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun findNextCommand(count: Int, commands: String, openingOrClosingBracket: Boolean): Int {
+fun searchNextCommand(count: Int, commands: String, openingOrClosingBracket: Boolean): Int {
     var nextCount = count
     val target = if (openingOrClosingBracket) ']'
     else '['
     while (commands[nextCount] != target && nextCount < commands.length) {
         if (openingOrClosingBracket) {
             if (commands[nextCount] == '[') {
-                nextCount = findNextCommand(nextCount + 1, commands, true)
+                nextCount = searchNextCommand(nextCount + 1, commands, true)
             }
             nextCount++
         } else {
             if (commands[nextCount] == ']') {
-                nextCount = findNextCommand(nextCount - 1, commands, false)
+                nextCount = searchNextCommand(nextCount - 1, commands, false)
             }
             nextCount--
         }
@@ -375,9 +375,7 @@ fun findNextCommand(count: Int, commands: String, openingOrClosingBracket: Boole
 }
 
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    if (Regex("""[^-+ \[\]<>]""").containsMatchIn(commands) ||
-        commands.filter { it == '[' }.length != commands.filter { it == ']' }.length
-    ) throw IllegalArgumentException()
+    if (Regex("""[^-+ \[\]<>]""").containsMatchIn(commands)) throw IllegalArgumentException()
     var bracketsCheck = 0
     commands.forEach {
         if (it == '[') bracketsCheck++
@@ -392,21 +390,19 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var limitMut = limit
     var count = 0
     while (limitMut > 0 && count < commands.length) {
-        if (commands[count] != ' ') {
-            when (commands[count]) {
-                '+' -> result[position]++
-                '-' -> result[position]--
-                '>' -> position++
-                '<' -> position--
-                '[' -> if (result[position] == 0) {
-                    count = findNextCommand(count + 1, commands, true)
-                }
-                ']' -> if (result[position] != 0) {
-                    count = findNextCommand(count - 1, commands, false)
-                }
+        when (commands[count]) {
+            '+' -> result[position]++
+            '-' -> result[position]--
+            '>' -> position++
+            '<' -> position--
+            '[' -> if (result[position] == 0) {
+                count = searchNextCommand(count + 1, commands, true)
             }
-            if (position !in 0 until cells) throw IllegalStateException()
+            ']' -> if (result[position] != 0) {
+                count = searchNextCommand(count - 1, commands, false)
+            }
         }
+        if (position !in 0 until cells) throw IllegalStateException()
         count++
         limitMut--
     }
