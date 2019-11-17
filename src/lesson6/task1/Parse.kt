@@ -359,7 +359,7 @@ fun findNextCommand(count: Int, commands: String, openingOrClosingBracket: Boole
     var nextCount = count
     val target = if (openingOrClosingBracket) ']'
     else '['
-    while (commands[nextCount] != target) {
+    while (commands[nextCount] != target && nextCount < commands.length) {
         if (openingOrClosingBracket) {
             if (commands[nextCount] == '[') {
                 nextCount = findNextCommand(nextCount + 1, commands, true)
@@ -371,6 +371,7 @@ fun findNextCommand(count: Int, commands: String, openingOrClosingBracket: Boole
             }
             nextCount--
         }
+        if (nextCount !in 0 until commands.length) throw IllegalArgumentException()
     }
     return nextCount
 }
