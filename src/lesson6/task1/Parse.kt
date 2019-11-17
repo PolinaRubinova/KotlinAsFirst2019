@@ -3,7 +3,6 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import java.util.*
 
 /**
  * Пример
@@ -371,7 +370,6 @@ fun findNextCommand(count: Int, commands: String, openingOrClosingBracket: Boole
             }
             nextCount--
         }
-        if (nextCount !in 0 until commands.length) throw IllegalArgumentException()
     }
     return nextCount
 }
@@ -380,15 +378,15 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (Regex("""[^-+ \[\]<>]""").containsMatchIn(commands) ||
         commands.filter { it == '[' }.length != commands.filter { it == ']' }.length
     ) throw IllegalArgumentException()
-    val bracketsCheck = Stack<Char>()
+    var bracketsCheck = 0
     commands.forEach {
-        if (it == '[') bracketsCheck.push(it)
+        if (it == '[') bracketsCheck++
         else if (it == ']') {
-            if (bracketsCheck.isNotEmpty() && bracketsCheck.peek() == '[') bracketsCheck.pop()
+            if (bracketsCheck != 0) bracketsCheck--
             else throw IllegalArgumentException()
         }
     }
-    if (bracketsCheck.isNotEmpty()) throw IllegalArgumentException()
+    if (bracketsCheck != 0) throw IllegalArgumentException()
     val result = MutableList(cells) { 0 }
     var position = cells / 2
     var limitMut = limit
