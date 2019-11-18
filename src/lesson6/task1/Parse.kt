@@ -131,7 +131,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     if (phone == "") return ""
     val answer = StringBuilder()
-    if (Regex("""[^-+() 0123456789]""").containsMatchIn(phone)) return ""
+    if (Regex("""[^-+() \d]""").containsMatchIn(phone)) return ""
     if ("(" in phone || ")" in phone) {
         if (!("(" in phone && ")" in phone) ||
             phone.filter { it == '(' }.length != phone.filter { it == ')' }.length ||
@@ -160,11 +160,15 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    if (Regex("""[^-% 0123456789]""").containsMatchIn(jumps)) return -1
-    val searchMaxJump = Regex("""\d+""").findAll(jumps)
+    if (Regex("""[^-% \d]""").containsMatchIn(jumps)) return -1
+    val legalStr = listOf("-", "%")
     var maxJump = -1
-    for (element in searchMaxJump) {
-        if (element.value.toInt() > maxJump) maxJump = element.value.toInt()
+    for (element in jumps.split(" ")) {
+        if (element !in legalStr) {
+            if (element.toIntOrNull() != null) {
+                if (element.toIntOrNull()!! > maxJump) maxJump = element.toInt()
+            } else return -1
+        }
     }
     return maxJump
 }
@@ -181,7 +185,7 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    if (Regex("""[^-+% 0123456789]""").containsMatchIn(jumps)) return -1
+    if (Regex("""[^-+% \d]""").containsMatchIn(jumps)) return -1
     val searchMaxJump = mutableListOf<String>()
     searchMaxJump.addAll(Regex("""-|%|\+|\d+""").findAll(jumps).map { it.value.trim() })
     var maxJump = -1
@@ -208,8 +212,8 @@ fun plusMinus(expression: String): Int {
     val searchExpEl = Regex("""[ ]""").split(expression)
     if (searchExpEl.size % 2 == 0) throw IllegalArgumentException()
     if (!"$expression ".contains(Regex("""\d+""")) ||
-        Regex("""[^-+ 0123456789]""").containsMatchIn(expression) ||
-        Regex("""[^0123456789]""").containsMatchIn(searchExpEl[0])
+        Regex("""[^-+ \d]""").containsMatchIn(expression) ||
+        Regex("""[^\d]""").containsMatchIn(searchExpEl[0])
     ) throw IllegalArgumentException()
     var answer = searchExpEl[0].toInt()
     for (i in 1 until searchExpEl.size) {
@@ -219,7 +223,7 @@ fun plusMinus(expression: String): Int {
                 "-" -> answer -= searchExpEl[i + 1].toIntOrNull() ?: throw IllegalArgumentException()
                 else -> throw IllegalArgumentException()
             }
-        } else if (Regex("""[^0123456789]""").containsMatchIn(searchExpEl[i])) {
+        } else if (Regex("""[^\d]""").containsMatchIn(searchExpEl[i])) {
             throw IllegalArgumentException()
         }
     }
