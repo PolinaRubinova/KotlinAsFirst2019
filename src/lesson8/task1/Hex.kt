@@ -69,7 +69,7 @@ data class HexPoint(val x: Int, val y: Int) {
                 }
             }
         }
-        return pCheck.y.toInt() * 10 + pCheck.x.toInt()
+        return answer
     }
 
     override fun toString(): String = "$y.$x"
