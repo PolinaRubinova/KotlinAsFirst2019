@@ -2,6 +2,8 @@
 
 package lesson8.task1
 
+import kotlin.math.abs
+
 /**
  * Точка (гекс) на шестиугольной сетке.
  * Координаты заданы как в примере (первая цифра - y, вторая цифра - x)
@@ -36,7 +38,39 @@ data class HexPoint(val x: Int, val y: Int) {
      * Расстояние вычисляется как число единичных отрезков в пути между двумя гексами.
      * Например, путь межу гексами 16 и 41 (см. выше) может проходить через 25, 34, 43 и 42 и имеет длину 5.
      */
-    fun distance(other: HexPoint): Int = TODO()
+    fun distance(other: HexPoint): Int {
+        val p = Point(x.toDouble(), y.toDouble())
+        var pCheck = Point(other.x.toDouble(), other.y.toDouble())
+        var answer = 0
+        while (pCheck != p) {
+            when {
+                p.x == pCheck.x -> {
+                    return answer + abs(p.y - pCheck.y).toInt()
+                }
+                p.y == pCheck.y -> {
+                    return answer + abs(p.x - pCheck.x).toInt()
+                }
+                (p.x > pCheck.x && p.y > pCheck.y) -> {
+                    pCheck = Point(pCheck.x - 1, pCheck.y - 1)
+                    answer++
+                }
+                (p.x < pCheck.x && p.y < pCheck.y) -> {
+                    pCheck = Point(pCheck.x + 1, pCheck.y + 1)
+                    answer++
+                }
+
+                (p.x > pCheck.x && p.y < pCheck.y) -> {
+                    pCheck = Point(pCheck.x + 1, pCheck.y - 1)
+                    answer++
+                }
+                (p.x < pCheck.x && p.y > pCheck.y) -> {
+                    pCheck = Point(pCheck.x - 1, pCheck.y + 1)
+                    answer++
+                }
+            }
+        }
+        return pCheck.y.toInt() * 10 + pCheck.x.toInt()
+    }
 
     override fun toString(): String = "$y.$x"
 }
