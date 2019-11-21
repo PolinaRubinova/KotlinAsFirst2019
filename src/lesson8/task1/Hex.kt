@@ -51,12 +51,12 @@ data class HexPoint(val x: Int, val y: Int) {
                     return answer + abs(p.x - pCheck.x).toInt()
                 }
                 (p.x > pCheck.x && p.y > pCheck.y) -> {
-                    pCheck = Point(pCheck.x - 1, pCheck.y - 1)
-                    answer++
+                    pCheck = Point(pCheck.x + 1, pCheck.y + 1)
+                    answer += 2
                 }
                 (p.x < pCheck.x && p.y < pCheck.y) -> {
-                    pCheck = Point(pCheck.x + 1, pCheck.y + 1)
-                    answer++
+                    pCheck = Point(pCheck.x - 1, pCheck.y - 1)
+                    answer += 2
                 }
 
                 (p.x > pCheck.x && p.y < pCheck.y) -> {

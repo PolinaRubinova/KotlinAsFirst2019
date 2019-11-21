@@ -12,6 +12,7 @@ class HexTests {
     @Tag("Normal")
     fun hexPointDistance() {
         assertEquals(5, HexPoint(6, 1).distance(HexPoint(1, 4)))
+        assertEquals(749, HexPoint(-252, -557).distance(HexPoint(-558, -1000)))
     }
 
     @Test
