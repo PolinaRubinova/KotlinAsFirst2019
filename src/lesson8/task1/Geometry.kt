@@ -151,7 +151,13 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Найти точку пересечения с другой линией.
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
-    fun crossPoint(other: Line): Point = TODO()
+    fun crossPoint(other: Line): Point {
+        val x = (other.b * cos(angle) - b * cos(other.angle)) /
+                (sin(angle) * cos(other.angle) - sin(other.angle) * cos(angle))
+        val y = if (angle != PI / 2) (x * sin(angle) + b) / cos(angle)
+        else (x * sin(other.angle) + other.b) / cos(other.angle)
+        return Point(x, y)
+    }
 
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
@@ -191,13 +197,14 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
 fun bisectorByPoints(a: Point, b: Point): Line {
-    TODO()
-    /*
-    var angle = atan((b.y - a.y) / (b.x - a.x)) + PI / 2
+    var angle = when {
+        b.x - a.x <= 1e-5 -> 0.0
+        b.y - a.y <= 1e-5 -> PI / 2
+        else -> atan((b.y - a.y) / (b.x - a.x)) + PI / 2
+    }
     if (angle < 0.0) angle += PI
     val center = Point((b.x + a.x) / 2, (b.y + a.y) / 2)
     return Line(center, angle)
-    */
 }
 
 /**
@@ -230,7 +237,24 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun crossP(line1: Line, line2: Line): Point {
+    val x = (line2.b * cos(line1.angle) - line1.b * cos(line2.angle)) /
+            (sin(line1.angle) * cos(line2.angle) - sin(line2.angle) * cos(line1.angle))
+    val y = if (line1.angle != PI / 2) (x * sin(line1.angle) + line1.b) / cos(line1.angle)
+    else (x * sin(line2.angle) + line2.b) / cos(line2.angle)
+    return Point(x, y)
+}
+
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val bisector1 = bisectorByPoints(a, b)
+    val bisector2 = bisectorByPoints(b, c)
+    val center = when {
+        crossP(bisector1, bisector2).x <= 1e-5 ||
+                crossP(bisector1, bisector2).y <= 1e-5 -> Point(0.0, 0.0)
+        else -> crossP(bisector1, bisector2)
+    }
+    return Circle(center, center.distance(a))
+}
 
 /**
  * Очень сложная
