@@ -41,32 +41,31 @@ data class HexPoint(val x: Int, val y: Int) {
      * Например, путь межу гексами 16 и 41 (см. выше) может проходить через 25, 34, 43 и 42 и имеет длину 5.
      */
     fun distance(other: HexPoint): Int {
-        val p = Point(x.toDouble(), y.toDouble())
-        var pCheck = Point(other.x.toDouble(), other.y.toDouble())
+        var count = other
         var answer = 0
-        while (pCheck != p) {
+        while (count != this) {
             when {
-                p.x == pCheck.x -> {
-                    return answer + abs(p.y - pCheck.y).toInt()
+                this.x == count.x -> {
+                    return answer + abs(this.y - count.y)
                 }
-                p.y == pCheck.y -> {
-                    return answer + abs(p.x - pCheck.x).toInt()
+                this.y == count.y -> {
+                    return answer + abs(this.x - count.x)
                 }
-                (p.x > pCheck.x && p.y > pCheck.y) -> {
-                    pCheck = Point(pCheck.x + 1, pCheck.y + 1)
+                (this.x > count.x && this.y > count.y) -> {
+                    count = HexPoint(count.x + 1, count.y + 1)
                     answer += 2
                 }
-                (p.x < pCheck.x && p.y < pCheck.y) -> {
-                    pCheck = Point(pCheck.x - 1, pCheck.y - 1)
+                (this.x < count.x && this.y < count.y) -> {
+                    count = HexPoint(count.x - 1, count.y - 1)
                     answer += 2
                 }
 
-                (p.x > pCheck.x && p.y < pCheck.y) -> {
-                    pCheck = Point(pCheck.x + 1, pCheck.y - 1)
+                (this.x > count.x && this.y < count.y) -> {
+                    count = HexPoint(count.x + 1, count.y - 1)
                     answer++
                 }
-                (p.x < pCheck.x && p.y > pCheck.y) -> {
-                    pCheck = Point(pCheck.x - 1, pCheck.y + 1)
+                (this.x < count.x && this.y > count.y) -> {
+                    count = HexPoint(count.x - 1, count.y + 1)
                     answer++
                 }
             }
@@ -95,14 +94,14 @@ data class Hexagon(val center: HexPoint, val radius: Int) {
      * и другим шестиугольником B с центром в 26 и радиуоом 2 равно 2
      * (расстояние между точками 32 и 24)
      */
-    fun distance(other: Hexagon): Int = TODO()
+    fun distance(other: Hexagon): Int = center.distance(other.center) - radius - other.radius
 
     /**
      * Тривиальная
      *
      * Вернуть true, если заданная точка находится внутри или на границе шестиугольника
      */
-    fun contains(point: HexPoint): Boolean = TODO()
+    fun contains(point: HexPoint): Boolean = point.distance(center) <= 0
 }
 
 /**
@@ -212,22 +211,21 @@ fun HexPoint.move(direction: Direction, distance: Int): HexPoint = TODO()
  *     )
  */
 fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> {
-    val result = mutableListOf<HexPoint>()
-    result.add(from)
-    var count = HexPoint(from.x, from.y)
-    loop@ while (count != to) {
+    val result = mutableListOf(from)
+    var count = from
+    while (count != to) {
         when {
             count.x == to.x -> {
-                for (i in min(count.y, to.y) + 1 until max(count.y, to.y)) {
+                for (i in min(count.y, to.y) + 1..max(count.y, to.y)) {
                     result.add(HexPoint(count.x, i))
                 }
-                break@loop
+                return result
             }
             count.y == to.y -> {
-                for (i in min(count.x, to.x) + 1 until max(count.x, to.x)) {
+                for (i in min(count.x, to.x) + 1..max(count.x, to.x)) {
                     result.add(HexPoint(i, count.y))
                 }
-                break@loop
+                return result
             }
             (to.x > count.x && to.y > count.y) -> {
                 count = HexPoint(count.x + 1, count.y)
