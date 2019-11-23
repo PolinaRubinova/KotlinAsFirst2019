@@ -243,11 +243,7 @@ fun crossP(line1: Line, line2: Line): Point {
 fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
     val bisector1 = bisectorByPoints(a, b)
     val bisector2 = bisectorByPoints(b, c)
-    val center = when {
-        crossP(bisector1, bisector2).x <= 1e-5 ||
-                crossP(bisector1, bisector2).y <= 1e-5 -> Point(0.0, 0.0)
-        else -> crossP(bisector1, bisector2)
-    }
+    val center = bisector1.crossPoint(bisector2)
     return Circle(center, center.distance(a))
 }
 
