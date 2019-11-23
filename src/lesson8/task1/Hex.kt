@@ -209,7 +209,63 @@ fun HexPoint.move(direction: Direction, distance: Int): HexPoint = TODO()
  *       HexPoint(y = 5, x = 3)
  *     )
  */
-fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> = TODO()
+fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> {
+    val result = mutableListOf<HexPoint>()
+    result.add(from)
+    var start = Point(from.x.toDouble(), from.y.toDouble())
+    val end = Point(to.x.toDouble(), to.y.toDouble())
+    val a: Int
+    val b: Int
+    loop@ while (start != end) {
+        when {
+            start.x == end.x -> {
+                if (start.y < end.y) {
+                    a = start.y.toInt()
+                    b = end.y.toInt()
+                } else {
+                    b = start.y.toInt()
+                    a = end.y.toInt()
+                }
+                for (i in a + 1 until b) {
+                    result.add(HexPoint(start.x.toInt(), i))
+                }
+                break@loop
+            }
+            start.y == end.y -> {
+                if (start.x < end.x) {
+                    a = start.x.toInt()
+                    b = end.x.toInt()
+                } else {
+                    b = start.x.toInt()
+                    a = end.x.toInt()
+                }
+                for (i in a + 1 until b) {
+                    result.add(HexPoint(i, start.y.toInt()))
+                }
+                break@loop
+            }
+            (end.x > start.x && end.y > start.y) -> {
+                start = Point(start.x + 1, start.y)
+                result.add(HexPoint(start.x.toInt(), start.y.toInt()))
+                start = Point(start.x, start.y + 1)
+            }
+            (end.x < start.x && end.y < start.y) -> {
+                start = Point(start.x - 1, start.y)
+                result.add(HexPoint(start.x.toInt(), start.y.toInt()))
+                start = Point(start.x, start.y - 1)
+            }
+            (end.x > start.x && end.y < start.y) -> {
+                start = Point(start.x + 1, start.y - 1)
+            }
+            (end.x < start.x && end.y > start.y) -> {
+                start = Point(start.x - 1, start.y + 1)
+            }
+        }
+        result.add(HexPoint(start.x.toInt(), start.y.toInt()))
+    }
+    result.add(to)
+    return result
+}
 
 /**
  * Очень сложная
