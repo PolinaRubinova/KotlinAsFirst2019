@@ -2,6 +2,7 @@
 
 package lesson8.task1
 
+import javafx.fxml.Initializable
 import lesson1.task1.sqr
 import java.lang.Math.atan
 import kotlin.math.*
@@ -108,6 +109,7 @@ data class Segment(val begin: Point, val end: Point) {
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
 fun diameter(vararg points: Point): Segment {
+    if (points.size < 2) throw IllegalArgumentException()
     var maxStart = points[0]
     var maxEnd = points[0]
     for (i in 0 until points.size) {
@@ -211,7 +213,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     if (circles.size < 2) throw IllegalArgumentException()
     var minDistance = Double.MAX_VALUE
-    var answer: Pair<Circle, Circle>? = null
+    var answer = Pair(circles[0], circles[circles.size - 1])
     for (i in 0 until circles.size - 1) {
         for (j in i + 1 until circles.size) {
             if (circles[i].distance(circles[j]) < minDistance) {
@@ -220,7 +222,7 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
             }
         }
     }
-    return answer!!
+    return answer
 }
 
 /**
@@ -232,13 +234,6 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun crossP(line1: Line, line2: Line): Point {
-    val x = (line2.b * cos(line1.angle) - line1.b * cos(line2.angle)) /
-            (sin(line1.angle) * cos(line2.angle) - sin(line2.angle) * cos(line1.angle))
-    val y = if (line1.angle != PI / 2) (x * sin(line1.angle) + line1.b) / cos(line1.angle)
-    else (x * sin(line2.angle) + line2.b) / cos(line2.angle)
-    return Point(x, y)
-}
 
 fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
     val bisector1 = bisectorByPoints(a, b)

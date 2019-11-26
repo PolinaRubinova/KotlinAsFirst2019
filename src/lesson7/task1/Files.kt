@@ -4,7 +4,6 @@ package lesson7.task1
 
 import ru.spbstu.wheels.toMap
 import java.io.File
-import java.util.Stack
 
 /**
  * Пример
@@ -154,7 +153,9 @@ fun centerFile(inputName: String, outputName: String) {
         if (line.isNotEmpty()) {
             lineTrim = line.trim()
             val ind = kotlin.math.floor(((maxLength - lineTrim.length) / 2).toDouble()).toInt()
-            for (i in 0 until ind) outputStream.write(" ")
+            for (i in 0 until ind) {
+                outputStream.write(" ")
+            }
             outputStream.write(lineTrim)
         } else {
             for (i in 0 until kotlin.math.floor((maxLength / 2).toDouble()).toInt()) outputStream.write(" ")
@@ -327,7 +328,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val names = mutableListOf<String>()
     val numbers = mutableListOf<Int>()
     File(inputName).readLines().forEach {
-        if (it.length == it.toLowerCase().toSet().size) {
+        if (it.length == it.toSet().size) {
             names.add(it)
             numbers.add(it.toLowerCase().toSet().size)
         }

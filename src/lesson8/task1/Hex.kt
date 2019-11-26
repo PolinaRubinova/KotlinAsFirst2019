@@ -248,7 +248,7 @@ fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> {
         result.add(count)
     }
     result.add(to)
-    return result
+    return result.toList()
 }
 
 /**

@@ -161,7 +161,7 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     if (Regex("""[^-% \d]""").containsMatchIn(jumps)) return -1
-    val legalStr = listOf("-", "%")
+    val legalStr = setOf("-", "%")
     var maxJump = -1
     for (element in jumps.split(" ")) {
         if (element !in legalStr) {
@@ -209,20 +209,19 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    val searchExpEl = Regex("""[ ]""").split(expression)
+    val searchExpEl = Regex("""\s+""").split(expression.trim())
+    val legalChars = setOf("+", "-")
     if (searchExpEl.size % 2 == 0) throw IllegalArgumentException()
-    if (!"$expression ".contains(Regex("""\d+""")) ||
-        Regex("""[^-+ \d]""").containsMatchIn(expression) ||
-        Regex("""[^\d]""").containsMatchIn(searchExpEl[0])
-    ) throw IllegalArgumentException()
-    var answer = searchExpEl[0].toInt()
+    if (Regex("""[^\d]""").containsMatchIn(searchExpEl[0])) throw IllegalArgumentException()
+    var answer = searchExpEl[0].toIntOrNull() ?: throw IllegalArgumentException()
     for (i in 1 until searchExpEl.size) {
-        if (i % 2 == 1 && !Regex("""[^-+]""").containsMatchIn(searchExpEl[i])) {
-            when (searchExpEl[i]) {
-                "+" -> answer += searchExpEl[i + 1].toIntOrNull() ?: throw IllegalArgumentException()
-                "-" -> answer -= searchExpEl[i + 1].toIntOrNull() ?: throw IllegalArgumentException()
-                else -> throw IllegalArgumentException()
-            }
+        if (i % 2 == 1) {
+            if (searchExpEl[i] in legalChars) {
+                when (searchExpEl[i]) {
+                    "+" -> answer += searchExpEl[i + 1].toIntOrNull() ?: throw IllegalArgumentException()
+                    "-" -> answer -= searchExpEl[i + 1].toIntOrNull() ?: throw IllegalArgumentException()
+                }
+            } else throw IllegalArgumentException()
         } else if (Regex("""[^\d]""").containsMatchIn(searchExpEl[i])) {
             throw IllegalArgumentException()
         }
@@ -262,14 +261,17 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     val goodsAndPrices = Regex("""[; ]""").split(description)
-    if (goodsAndPrices.size < 2) return ""
+    if (goodsAndPrices.size < 2 ||
+        (goodsAndPrices.size % 2 != 1 && goodsAndPrices.size > 2)) return ""
     var nameMaxPrice = goodsAndPrices[0]
     var maxPrice = goodsAndPrices[1].toDoubleOrNull() ?: return ""
     for (i in 4 until goodsAndPrices.size step 3) {
-        if (goodsAndPrices[i].toDouble() > maxPrice) {
-            nameMaxPrice = goodsAndPrices[i - 1]
-            maxPrice = goodsAndPrices[i].toDoubleOrNull() ?: return ""
-        }
+        if (goodsAndPrices[i].toDoubleOrNull() != null) {
+            if (goodsAndPrices[i].toDouble() > maxPrice) {
+                nameMaxPrice = goodsAndPrices[i - 1]
+                maxPrice = goodsAndPrices[i].toDouble()
+            }
+        } else return ""
     }
     return nameMaxPrice
 }
@@ -307,7 +309,7 @@ fun fromRoman(roman: String): Int {
         count = i
         while (count < roman.length && roman[count] == roman[i]) count++
         if (count < roman.length && roman[i] in pairs.keys &&
-            roman[count] in pairs[roman[i]] ?: error(-1)
+            roman[count] in pairs[roman[i]]!!
         ) {
             if (count - i >= 2) return -1
             answer += numbers[romans.indexOf(roman[count])] -
