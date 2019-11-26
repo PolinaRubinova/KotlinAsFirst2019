@@ -260,7 +260,7 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    val goodsAndPrices = Regex("""[\s+;]""").split(description)
+    val goodsAndPrices = Regex("""[\s;]""").split(description)
     if (goodsAndPrices.size < 2 ||
         ((goodsAndPrices.size - 2) % 3 != 0 && goodsAndPrices.size > 2)
     ) return ""
