@@ -142,12 +142,17 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
+fun findMaxLineLength(listOfStrings: List<String>): Int {
+    var result = 0
+    listOfStrings.forEach {
+        if (it.trim().length > result) result = it.trim().length
+    }
+    return result
+}
+
 fun centerFile(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
-    var maxLength = 0
-    File(inputName).readLines().forEach {
-        if (it.trim().length > maxLength) maxLength = it.trim().length
-    }
+    val maxLength = findMaxLineLength(File(inputName).readLines())
     var lineTrim: String
     for (line in File(inputName).readLines()) {
         if (line.isNotEmpty()) {
@@ -328,7 +333,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val names = mutableListOf<String>()
     val numbers = mutableListOf<Int>()
     File(inputName).readLines().forEach {
-        if (it.length == it.toSet().size) {
+        if (it.length == it.toLowerCase().toSet().size) {
             names.add(it)
             numbers.add(it.toLowerCase().toSet().size)
         }

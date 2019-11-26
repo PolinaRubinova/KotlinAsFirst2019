@@ -212,6 +212,8 @@ fun HexPoint.move(direction: Direction, distance: Int): HexPoint = TODO()
  *     )
  */
 fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> {
+    TODO()
+    /*
     val result = mutableListOf(from)
     var count = from
     while (count != to) {
@@ -249,6 +251,7 @@ fun pathBetweenHexes(from: HexPoint, to: HexPoint): List<HexPoint> {
     }
     result.add(to)
     return result.toList()
+*/
 }
 
 /**
