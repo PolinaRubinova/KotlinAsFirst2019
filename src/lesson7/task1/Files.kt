@@ -606,56 +606,56 @@ fun intToList(hv: Int): MutableList<Int> {
 }
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    val outputStream = File(outputName).bufferedWriter()
     val listLhv = intToList(lhv) //список цифр делимого
     var divLhv = 0 //делимое
     var strDivLhv: String
     var modulo: Int //остаток от деления
     var subtrahend: Int //вычитаемое
     var strSubtrahend: String
-    var counter = 0
+    var counter = 0 //счетчик по элементам listLhv
     var indent = "" //отступ
     var indCheck = false
-    while (divLhv < rhv) {
-        divLhv = divLhv * 10 + listLhv[counter]
-        counter++
-        if (counter >= listLhv.size - 1) break
-    }
-    modulo = divLhv % rhv
-    subtrahend = divLhv - modulo
-    outputStream.write(" $lhv | $rhv\n-$subtrahend")
-    for (j in 0 until " $lhv | $rhv".length - "-$divLhv".length - "$rhv".length) outputStream.write(" ")
-    outputStream.write((lhv / rhv).toString() + "\n")
-    for (j in 0 until "-$divLhv".length) outputStream.write("-")
-    outputStream.newLine()
-    while (counter < listLhv.size) {
-        indent = ""
-        divLhv = modulo * 10 + listLhv[counter]
-        strDivLhv = if (modulo == 0) {
-            "0$divLhv"
-        } else divLhv.toString()
+    File(outputName).bufferedWriter().use {
+        while (divLhv < rhv) {
+            divLhv = divLhv * 10 + listLhv[counter]
+            counter++
+            if (counter == listLhv.size) break
+        }
         modulo = divLhv % rhv
         subtrahend = divLhv - modulo
-        if (modulo == 0) {
-            strSubtrahend = " -$subtrahend"
-            indCheck = true
-        } else strSubtrahend = "-$subtrahend"
-        for (j in 0 until counter) indent += " "
-        if (subtrahend == 0 || lhv < rhv) {
-            outputStream.write("$indent$strDivLhv\n")
-            outputStream.write("$indent$strSubtrahend\n")
-        } else {
-            indent = indent.substring(rhv.toString().length)
-            outputStream.write(" $indent$strDivLhv\n")
-            outputStream.write("$indent$strSubtrahend\n")
+        it.write(" $lhv | $rhv\n-$subtrahend")
+        for (j in 0 until " $lhv | $rhv".length - "-$divLhv".length - "$rhv".length) it.write(" ")
+        it.write((lhv / rhv).toString() + "\n")
+        for (j in 0 until "-$divLhv".length) it.write("-")
+        it.newLine()
+        while (counter < listLhv.size) {
+            indent = ""
+            divLhv = modulo * 10 + listLhv[counter]
+            strDivLhv = if (modulo == 0) {
+                "0$divLhv"
+            } else divLhv.toString()
+            modulo = divLhv % rhv
+            subtrahend = divLhv - modulo
+            if (modulo == 0) {
+                strSubtrahend = " -$subtrahend"
+                indCheck = true
+            } else strSubtrahend = "-$subtrahend"
+            for (j in 0 until counter) indent += " "
+            if (subtrahend == 0 || lhv < rhv) {
+                it.write("$indent$strDivLhv\n")
+                it.write("$indent$strSubtrahend\n")
+            } else {
+                indent = indent.substring(rhv.toString().length)
+                it.write(" $indent$strDivLhv\n")
+                it.write("$indent$strSubtrahend\n")
+            }
+            if (indCheck) indent += " "
+            it.write(indent)
+            for (j in 0 until strSubtrahend.trim().length) it.write("-")
+            counter++
+            it.newLine()
         }
-        if (indCheck) indent += " "
-        outputStream.write(indent)
-        for (j in 0 until strSubtrahend.trim().length) outputStream.write("-")
-        counter++
-        outputStream.newLine()
+        for (j in 0 until "$indent-$subtrahend".length - 1) it.write(" ")
+        it.write("$modulo")
     }
-    for (j in 0 until "$indent-$subtrahend".length - 1) outputStream.write(" ")
-    outputStream.write("$modulo")
-    outputStream.close()
 }
