@@ -649,7 +649,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             outputStream.write(" $indent$strDivLhv\n")
             outputStream.write("$indent$strSubtrahend\n")
         }
-
         if (indCheck) indent += " "
         outputStream.write(indent)
         for (j in 0 until strSubtrahend.trim().length) outputStream.write("-")
