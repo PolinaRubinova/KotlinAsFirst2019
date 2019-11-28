@@ -84,7 +84,6 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val outputStream = File(outputName).bufferedWriter()
     val exceptions = listOf("жюри", "брошюра", "парашют")
     val letters = listOf('ж', 'ч', 'ш', 'щ', 'Ж', 'Ч', 'Ш', 'Щ')
     var check: Boolean
@@ -97,32 +96,33 @@ fun sibilants(inputName: String, outputName: String) {
         'Я' to 'А',
         'Ю' to 'У'
     )
-    for (line in File(inputName).readLines()) {
-        val splitLine = line.split(" ")
-        for (i in 0 until splitLine.size) {
-            if (splitLine[i] !in exceptions) {
-                check = true
-                word = splitLine[i]
-                for (j in 0 until word.length - 1) {
-                    if (word[j] in letters && word[j + 1] in mistakes.keys) {
-                        word = word.replace(
-                            word[j] + word[j + 1].toString(),
-                            word[j] + mistakes[word[j + 1]].toString()
-                        )
-                        check = false
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            val splitLine = line.split(" ")
+            for (i in 0 until splitLine.size) {
+                if (splitLine[i] !in exceptions) {
+                    check = true
+                    word = splitLine[i]
+                    for (j in 0 until word.length - 1) {
+                        if (word[j] in letters && word[j + 1] in mistakes.keys) {
+                            word = word.replace(
+                                word[j] + word[j + 1].toString(),
+                                word[j] + mistakes[word[j + 1]].toString()
+                            )
+                            check = false
+                        }
+                    }
+                    if (check) {
+                        it.write(splitLine[i])
+                    } else {
+                        it.write(word)
                     }
                 }
-                if (check) {
-                    outputStream.write(splitLine[i])
-                } else {
-                    outputStream.write(word)
-                }
+                if (i != splitLine.size - 1) it.write(" ")
             }
-            if (i != splitLine.size - 1) outputStream.write(" ")
+            it.newLine()
         }
-        outputStream.newLine()
     }
-    outputStream.close()
 }
 
 /**
@@ -198,36 +198,33 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    val outputStream = File(outputName).bufferedWriter()
-    var maxLength = 0
+    val maxLength = findMaxLineLength(File(inputName).readLines())
     var wordsList: List<String>
     var wordsLength: Int
-    File(inputName).readLines().forEach {
-        if (it.trim().length > maxLength) maxLength = it.trim().length
-    }
-    for (line in File(inputName).readLines()) {
-        wordsLength = 0
-        if (line.replace(" ", "").isNotEmpty()) {
-            wordsList = Regex("""\s+""").split(line.trim())
-            wordsList.forEach { wordsLength += it.length }
-            outputStream.write(wordsList[0])
-            if (wordsList.size > 1) {
-                val counter = (maxLength - wordsLength) / (wordsList.size - 1).toDouble()
-                var exception = (maxLength - wordsLength) % (wordsList.size - 1)
-                for (i in 1 until wordsList.size) {
-                    if (exception > 0) {
-                        for (j in 0 until counter.toInt() + 1) outputStream.write(" ")
-                        exception--
-                    } else {
-                        for (j in 0 until counter.toInt()) outputStream.write(" ")
+    File(outputName).bufferedWriter().use { itOutputStream ->
+        for (line in File(inputName).readLines()) {
+            wordsLength = 0
+            if (line.replace(" ", "").isNotEmpty()) {
+                wordsList = Regex("""\s+""").split(line.trim())
+                wordsList.forEach { wordsLength += it.length }
+                itOutputStream.write(wordsList[0])
+                if (wordsList.size > 1) {
+                    val counter = (maxLength - wordsLength) / (wordsList.size - 1).toDouble()
+                    var exception = (maxLength - wordsLength) % (wordsList.size - 1)
+                    for (i in 1 until wordsList.size) {
+                        if (exception > 0) {
+                            for (j in 0 until counter.toInt() + 1) itOutputStream.write(" ")
+                            exception--
+                        } else {
+                            for (j in 0 until counter.toInt()) itOutputStream.write(" ")
+                        }
+                        itOutputStream.write(wordsList[i])
                     }
-                    outputStream.write(wordsList[i])
                 }
             }
+            itOutputStream.newLine()
         }
-        outputStream.newLine()
     }
-    outputStream.close()
 }
 
 /**
@@ -392,7 +389,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlSimple(inputName: String, outputName: String) { //ПЕРЕДЕЛАТЬ!!!
+fun markdownToHtmlSimple(inputName: String, outputName: String) {
     TODO()
     /*
     val outputStream = File(outputName).bufferedWriter()
@@ -429,7 +426,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) { //ПЕРЕДЕ
     }
     outputStream.write("</p></body></html>")
     outputStream.close()
-     */
+    */
 }
 
 /**
@@ -597,8 +594,6 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
-fun signOfNum(hv: Int): Int = if (hv < 0) -1
-else 1
 
 fun intToList(hv: Int): MutableList<Int> {
     var number = hv
@@ -610,47 +605,58 @@ fun intToList(hv: Int): MutableList<Int> {
     return result
 }
 
-
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
-    /*
     val outputStream = File(outputName).bufferedWriter()
-    outputStream.write(" $lhv | $rhv")
-    outputStream.newLine()
-    val signLhv = signOfNum(lhv) //цнак делимого
-    val signRhv = signOfNum(rhv) //знако делителя
-    val listLhv = intToList(lhv * signLhv) //список цифр делимого
-    val listRhv = intToList(rhv * signRhv) //список цифр делителя
-    var dividend: Int //делимое
-    val divider = rhv * signRhv //делитель
-    //var quotient: Int //частное
+    val listLhv = intToList(lhv) //список цифр делимого
+    var divLhv = 0 //делимое
+    var strDivLhv: String
     var modulo: Int //остаток от деления
-
-    //while (listLhv.size > 0) {
-    dividend = 0
-    for (j in 0 until listRhv.size) {
-        dividend = dividend * 10 + listLhv[j]
-        if (j == listLhv.size - 1) break
+    var subtrahend: Int //вычитаемое
+    var strSubtrahend: String
+    var counter = 0
+    var indent = "" //отступ
+    var indCheck = false
+    while (divLhv < rhv) {
+        divLhv = divLhv * 10 + listLhv[counter]
+        counter++
+        if (counter >= listLhv.size - 1) break
     }
-    if (dividend % divider != 0 && listRhv.size < listLhv.size) dividend = dividend * 10 + listLhv[listRhv.size]
-    modulo = dividend % divider
-    outputStream.write("-")
-    outputStream.write((dividend - modulo).toString())
-
-    for (j in 0 until " $lhv | $rhv".length - "-$dividend".length - "$rhv".length) outputStream.write(" ")
-    outputStream.write((lhv / rhv).toString())
+    modulo = divLhv % rhv
+    subtrahend = divLhv - modulo
+    outputStream.write(" $lhv | $rhv\n-$subtrahend")
+    for (j in 0 until " $lhv | $rhv".length - "-$divLhv".length - "$rhv".length) outputStream.write(" ")
+    outputStream.write((lhv / rhv).toString() + "\n")
+    for (j in 0 until "-$divLhv".length) outputStream.write("-")
     outputStream.newLine()
+    while (counter < listLhv.size) {
+        indent = ""
+        divLhv = modulo * 10 + listLhv[counter]
+        strDivLhv = if (modulo == 0) {
+            "0$divLhv"
+        } else divLhv.toString()
+        modulo = divLhv % rhv
+        subtrahend = divLhv - modulo
+        if (modulo == 0) {
+            strSubtrahend = " -$subtrahend"
+            indCheck = true
+        } else strSubtrahend = "-$subtrahend"
+        for (j in 0 until counter) indent += " "
+        if (subtrahend == 0 || lhv < rhv) {
+            outputStream.write("$indent$strDivLhv\n")
+            outputStream.write("$indent$strSubtrahend\n")
+        } else {
+            indent = indent.substring(rhv.toString().length)
+            outputStream.write(" $indent$strDivLhv\n")
+            outputStream.write("$indent$strSubtrahend\n")
+        }
 
-    for (j in 0 until "-$dividend".length) outputStream.write("-")
-    outputStream.newLine()
-
-    for (j in 0 until "$dividend".length - "$modulo".length) outputStream.write(" ")
-    outputStream.write(modulo.toString())
-
-
-    //for (j in 0 until "$dividend".length) listLhv.removeAt(0)
-    //}
-
+        if (indCheck) indent += " "
+        outputStream.write(indent)
+        for (j in 0 until strSubtrahend.trim().length) outputStream.write("-")
+        counter++
+        outputStream.newLine()
+    }
+    for (j in 0 until "$indent-$subtrahend".length - 1) outputStream.write(" ")
+    outputStream.write("$modulo")
     outputStream.close()
-     */
 }

@@ -2,6 +2,8 @@
 
 package lesson9.task1
 
+import java.lang.IllegalArgumentException
+
 /**
  * Ячейка матрицы: row = ряд, column = колонка
  */
