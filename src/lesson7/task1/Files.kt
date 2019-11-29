@@ -4,6 +4,7 @@ package lesson7.task1
 
 import ru.spbstu.wheels.toMap
 import java.io.File
+import kotlin.math.max
 
 /**
  * Пример
@@ -613,6 +614,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var subtrahend: Int //вычитаемое
     var counter = 0 //счетчик по элементам listLhv
     var indent = "" //отступ
+    var start: String
+    var plus = 0
     File(outputName).bufferedWriter().use {
 
         while (divLhv < rhv) {
@@ -623,15 +626,31 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
         modulo = divLhv % rhv
         subtrahend = divLhv - modulo
-        it.write(" $lhv | $rhv\n-$subtrahend")
-        for (j in 0 until " $lhv | $rhv".length - "-$divLhv".length - "$rhv".length) it.write(" ")
+
+        if (lhv < rhv && "$subtrahend".length != "$lhv".length) {
+            start = "$lhv | $rhv"
+        } else {
+            start = " $lhv | $rhv"
+            plus++
+        }
+        it.write(start + "\n")
+
+        for (j in 0 until "$divLhv".length - "-$subtrahend".length) it.write(" ")
+
+        it.write("-$subtrahend")
+        for (j in 0 until start.length - "$divLhv".length - "$rhv".length - plus) it.write(" ")
         it.write((lhv / rhv).toString() + "\n")
 
-        for (j in 0 until "-$divLhv".length) it.write("-")
+        for (j in 0 until "$divLhv".length + plus) it.write("-")
         it.newLine()
+
+        for (i in 0 until "$divLhv".length - "$modulo".length + plus) indent += " "
+
+
 
         while (counter < listLhv.size) {
 
+            indent = ""
             for (j in 0..counter - "$modulo".length) indent += " "
 
             divLhv = modulo * 10 + listLhv[counter]
@@ -655,13 +674,12 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
             it.write("$indent-$subtrahend\n$indent")
 
-            for (j in 0 until kotlin.math.max(lenDivLhv, "-$subtrahend".length)) it.write("-")
+            for (j in 0 until max(lenDivLhv, "-$subtrahend".length)) it.write("-")
 
-            indent = ""
+            for (j in 0 until max(lenDivLhv, "-$subtrahend".length) - "$modulo".length) indent += " "
             counter++
             it.newLine()
         }
-        for (i in 0 until listLhv.size - "$modulo".length) indent += " "
-        it.write(" $indent$modulo")
+        it.write("$indent$modulo")
     }
 }
