@@ -624,10 +624,11 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             if (counter == listLhv.size) break
         }
 
+        lenDivLhv = "$divLhv".length
         modulo = divLhv % rhv
         subtrahend = divLhv - modulo
 
-        if (lhv < rhv && "$subtrahend".length != "$lhv".length) {
+        if ("$subtrahend".length != lenDivLhv) {
             start = "$lhv | $rhv"
         } else {
             start = " $lhv | $rhv"
@@ -635,23 +636,22 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         it.write(start + "\n")
 
-        for (j in 0 until "$divLhv".length - "-$subtrahend".length) it.write(" ")
+        for (j in 0 until lenDivLhv - "-$subtrahend".length) it.write(" ")
 
         it.write("-$subtrahend")
-        for (j in 0 until start.length - "$divLhv".length - "$rhv".length - plus) it.write(" ")
+        for (j in 0 until start.length - lenDivLhv - "$rhv".length - plus) it.write(" ")
         it.write((lhv / rhv).toString() + "\n")
 
-        for (j in 0 until "$divLhv".length + plus) it.write("-")
+        for (j in 0 until max(lenDivLhv, "-$subtrahend".length)) it.write("-")
         it.newLine()
 
-        for (i in 0 until "$divLhv".length - "$modulo".length + plus) indent += " "
-
+        for (i in 0 until lenDivLhv - "$modulo".length + plus) indent += " "
 
 
         while (counter < listLhv.size) {
 
             indent = ""
-            for (j in 0..counter - "$modulo".length) indent += " "
+            for (j in 0 until counter - "$modulo".length + plus) indent += " "
 
             divLhv = modulo * 10 + listLhv[counter]
             subtrahend = divLhv - divLhv % rhv
