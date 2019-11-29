@@ -647,13 +647,15 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
             modulo = divLhv % rhv
 
-            indent = if (lhv < rhv || lenDivLhv == "$subtrahend".length) {
-                indent.substring(1)
-            } else indent
+            if (lenDivLhv == "$subtrahend".length) {
+                indent = indent.substring(1)
+            } else if (lenDivLhv > "$subtrahend".length) {
+                for (j in 0 until lenDivLhv - "-$subtrahend".length) it.write(" ")
+            }
 
             it.write("$indent-$subtrahend\n$indent")
 
-            for (j in 0 until "-$subtrahend".trim().length) it.write("-")
+            for (j in 0 until kotlin.math.max(lenDivLhv, "-$subtrahend".length)) it.write("-")
 
             indent = ""
             counter++
