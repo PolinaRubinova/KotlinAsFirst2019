@@ -636,7 +636,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
 
             divLhv = modulo * 10 + listLhv[counter]
             subtrahend = divLhv - divLhv % rhv
-            modulo = divLhv % rhv
 
             lenDivLhv = if (modulo == 0) {
                 it.write(indent + "0$divLhv\n")
@@ -645,6 +644,8 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 it.write(indent + "$divLhv\n")
                 "$divLhv".length
             }
+
+            modulo = divLhv % rhv
 
             indent = if (lhv < rhv || lenDivLhv == "$subtrahend".length) {
                 indent.substring(1)
