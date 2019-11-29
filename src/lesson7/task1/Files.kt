@@ -616,31 +616,40 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var indent = "" //отступ
     var indCheck = false
     File(outputName).bufferedWriter().use {
+
         while (divLhv < rhv) {
             divLhv = divLhv * 10 + listLhv[counter]
             counter++
             if (counter == listLhv.size) break
         }
+
         modulo = divLhv % rhv
         subtrahend = divLhv - modulo
         it.write(" $lhv | $rhv\n-$subtrahend")
         for (j in 0 until " $lhv | $rhv".length - "-$divLhv".length - "$rhv".length) it.write(" ")
         it.write((lhv / rhv).toString() + "\n")
+
         for (j in 0 until "-$divLhv".length) it.write("-")
         it.newLine()
+
+        for (j in 0 until counter) indent += " "
+
         while (counter < listLhv.size) {
-            indent = ""
+
             divLhv = modulo * 10 + listLhv[counter]
+
             strDivLhv = if (modulo == 0) {
                 "0$divLhv"
             } else divLhv.toString()
+
             modulo = divLhv % rhv
             subtrahend = divLhv - modulo
+
             if (modulo == 0) {
                 strSubtrahend = " -$subtrahend"
                 indCheck = true
             } else strSubtrahend = "-$subtrahend"
-            for (j in 0 until counter) indent += " "
+
             if (subtrahend == 0 || lhv < rhv) {
                 it.write("$indent$strDivLhv\n")
                 it.write("$indent$strSubtrahend\n")
@@ -651,11 +660,17 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             }
             if (indCheck) indent += " "
             it.write(indent)
+
             for (j in 0 until strSubtrahend.trim().length) it.write("-")
+
             counter++
+            indent = ""
+            for (j in 0 until counter) indent += " "
+
             it.newLine()
         }
-        for (j in 0 until "$indent-$subtrahend".length - 1) it.write(" ")
-        it.write("$modulo")
+
+        indent = indent.substring(modulo.toString().length - 1)
+        it.write("$indent$modulo")
     }
 }

@@ -377,6 +377,16 @@ Basic, Ruby, Swift.
             File("temp.txt").delete()
         }
         test(
+            82,
+            17,
+            """
+                82 | 17
+               -68   4
+               ---
+                14
+             """
+        )
+        test(
             16,
             2,
             """
