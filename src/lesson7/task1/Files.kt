@@ -595,7 +595,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 
-fun intToList(hv: Int): MutableList<Int> {
+fun intToList(hv: Int): MutableList<Int> { //число в лист цифр
     var number = hv
     val result = mutableListOf<Int>()
     while (number != 0) {
@@ -608,13 +608,11 @@ fun intToList(hv: Int): MutableList<Int> {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val listLhv = intToList(lhv) //список цифр делимого
     var divLhv = 0 //делимое
-    var strDivLhv: String
+    var lenDivLhv: Int //длина делимого
     var modulo: Int //остаток от деления
     var subtrahend: Int //вычитаемое
-    var strSubtrahend: String
     var counter = 0 //счетчик по элементам listLhv
     var indent = "" //отступ
-    var indCheck = false
     File(outputName).bufferedWriter().use {
 
         while (divLhv < rhv) {
@@ -632,45 +630,35 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         for (j in 0 until "-$divLhv".length) it.write("-")
         it.newLine()
 
-        for (j in 0 until counter) indent += " "
-
         while (counter < listLhv.size) {
 
+            for (j in 0..counter - "$modulo".length) indent += " "
+
             divLhv = modulo * 10 + listLhv[counter]
-
-            strDivLhv = if (modulo == 0) {
-                "0$divLhv"
-            } else divLhv.toString()
-
+            subtrahend = divLhv - divLhv % rhv
             modulo = divLhv % rhv
-            subtrahend = divLhv - modulo
 
-            if (modulo == 0) {
-                strSubtrahend = " -$subtrahend"
-                indCheck = true
-            } else strSubtrahend = "-$subtrahend"
-
-            if (subtrahend == 0 || lhv < rhv) {
-                it.write("$indent$strDivLhv\n")
-                it.write("$indent$strSubtrahend\n")
+            lenDivLhv = if (modulo == 0) {
+                it.write(indent + "0$divLhv\n")
+                "0$divLhv".length
             } else {
-                indent = indent.substring(rhv.toString().length)
-                it.write(" $indent$strDivLhv\n")
-                it.write("$indent$strSubtrahend\n")
+                it.write(indent + "$divLhv\n")
+                "$divLhv".length
             }
-            if (indCheck) indent += " "
-            it.write(indent)
 
-            for (j in 0 until strSubtrahend.trim().length) it.write("-")
+            indent = if (lhv < rhv || lenDivLhv == "$subtrahend".length) {
+                indent.substring(1)
+            } else indent
 
-            counter++
+            it.write("$indent-$subtrahend\n$indent")
+
+            for (j in 0 until "-$subtrahend".trim().length) it.write("-")
+
             indent = ""
-            for (j in 0 until counter) indent += " "
-
+            counter++
             it.newLine()
         }
-
-        indent = indent.substring(modulo.toString().length - 1)
-        it.write("$indent$modulo")
+        for (i in 0 until listLhv.size - "$modulo".length) indent += " "
+        it.write(" $indent$modulo")
     }
 }
