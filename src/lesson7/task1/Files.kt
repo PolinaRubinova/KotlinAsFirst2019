@@ -5,6 +5,8 @@ package lesson7.task1
 import ru.spbstu.wheels.toMap
 import java.io.File
 import kotlin.math.max
+import kotlin.math.floor
+
 
 /**
  * Пример
@@ -151,24 +153,29 @@ fun findMaxLineLength(listOfStrings: List<String>): Int {
     return result
 }
 
+fun floorInt(x: Int): Int = floor(x.toDouble() / 2).toInt()
+
 fun centerFile(inputName: String, outputName: String) {
-    val outputStream = File(outputName).bufferedWriter()
     val maxLength = findMaxLineLength(File(inputName).readLines())
     var lineTrim: String
-    for (line in File(inputName).readLines()) {
-        if (line.isNotEmpty()) {
-            lineTrim = line.trim()
-            val ind = kotlin.math.floor(((maxLength - lineTrim.length) / 2).toDouble()).toInt()
-            for (i in 0 until ind) {
-                outputStream.write(" ")
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            if (line.isNotEmpty()) {
+                lineTrim = line.trim()
+                val ind = floorInt(maxLength - lineTrim.length)
+                for (i in 0 until ind) {
+                    it.write(" ")
+                }
+                it.write(lineTrim)
+            } else {
+                for (i in 0 until floorInt(maxLength)) {
+                    it.write(" ")
+                }
             }
-            outputStream.write(lineTrim)
-        } else {
-            for (i in 0 until kotlin.math.floor((maxLength / 2).toDouble()).toInt()) outputStream.write(" ")
+            it.newLine()
         }
-        outputStream.newLine()
+        it.close()
     }
-    outputStream.close()
 }
 
 /**
@@ -202,28 +209,28 @@ fun alignFileByWidth(inputName: String, outputName: String) {
     val maxLength = findMaxLineLength(File(inputName).readLines())
     var wordsList: List<String>
     var wordsLength: Int
-    File(outputName).bufferedWriter().use { itOutputStream ->
+    File(outputName).bufferedWriter().use { itOutput ->
         for (line in File(inputName).readLines()) {
             wordsLength = 0
             if (line.replace(" ", "").isNotEmpty()) {
                 wordsList = Regex("""\s+""").split(line.trim())
                 wordsList.forEach { wordsLength += it.length }
-                itOutputStream.write(wordsList[0])
+                itOutput.write(wordsList[0])
                 if (wordsList.size > 1) {
                     val counter = (maxLength - wordsLength) / (wordsList.size - 1).toDouble()
                     var exception = (maxLength - wordsLength) % (wordsList.size - 1)
                     for (i in 1 until wordsList.size) {
                         if (exception > 0) {
-                            for (j in 0 until counter.toInt() + 1) itOutputStream.write(" ")
+                            for (j in 0 until counter.toInt() + 1) itOutput.write(" ")
                             exception--
                         } else {
-                            for (j in 0 until counter.toInt()) itOutputStream.write(" ")
+                            for (j in 0 until counter.toInt()) itOutput.write(" ")
                         }
-                        itOutputStream.write(wordsList[i])
+                        itOutput.write(wordsList[i])
                     }
                 }
             }
-            itOutputStream.newLine()
+            itOutput.newLine()
         }
     }
 }
@@ -614,20 +621,17 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var subtrahend: Int //вычитаемое
     var counter = 0 //счетчик по элементам listLhv
     var indent = "" //отступ
-    var start: String
+    var start: String // "lhv | rhv"
     var plus = 0
     File(outputName).bufferedWriter().use {
-
         while (divLhv < rhv) {
             divLhv = divLhv * 10 + listLhv[counter]
             counter++
             if (counter == listLhv.size) break
         }
-
         lenDivLhv = "$divLhv".length
         modulo = divLhv % rhv
         subtrahend = divLhv - modulo
-
         if ("$subtrahend".length != lenDivLhv) {
             start = "$lhv | $rhv"
         } else {
@@ -635,27 +639,28 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             plus++
         }
         it.write(start + "\n")
-
-        for (j in 0 until lenDivLhv - "-$subtrahend".length) it.write(" ")
-
+        for (j in 0 until lenDivLhv - "-$subtrahend".length) {
+            it.write(" ")
+        }
         it.write("-$subtrahend")
-        for (j in 0 until start.length - lenDivLhv - "$rhv".length - plus) it.write(" ")
+        for (j in 0 until start.length - lenDivLhv - "$rhv".length - plus) {
+            it.write(" ")
+        }
         it.write((lhv / rhv).toString() + "\n")
-
-        for (j in 0 until max(lenDivLhv, "-$subtrahend".length)) it.write("-")
+        for (j in 0 until max(lenDivLhv, "-$subtrahend".length)) {
+            it.write("-")
+        }
         it.newLine()
-
-        for (i in 0 until lenDivLhv - "$modulo".length + plus) indent += " "
-
-
+        for (i in 0 until lenDivLhv - "$modulo".length + plus) {
+            indent += " "
+        }
         while (counter < listLhv.size) {
-
             indent = ""
-            for (j in 0 until counter - "$modulo".length + plus) indent += " "
-
+            for (j in 0 until counter - "$modulo".length + plus) {
+                indent += " "
+            }
             divLhv = modulo * 10 + listLhv[counter]
             subtrahend = divLhv - divLhv % rhv
-
             lenDivLhv = if (modulo == 0) {
                 it.write(indent + "0$divLhv\n")
                 "0$divLhv".length
@@ -663,20 +668,21 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 it.write(indent + "$divLhv\n")
                 "$divLhv".length
             }
-
             modulo = divLhv % rhv
-
             if (lenDivLhv == "$subtrahend".length) {
                 indent = indent.substring(1)
             } else if (lenDivLhv > "$subtrahend".length) {
-                for (j in 0 until lenDivLhv - "-$subtrahend".length) it.write(" ")
+                for (j in 0 until lenDivLhv - "-$subtrahend".length) {
+                    it.write(" ")
+                }
             }
-
             it.write("$indent-$subtrahend\n$indent")
-
-            for (j in 0 until max(lenDivLhv, "-$subtrahend".length)) it.write("-")
-
-            for (j in 0 until max(lenDivLhv, "-$subtrahend".length) - "$modulo".length) indent += " "
+            for (j in 0 until max(lenDivLhv, "-$subtrahend".length)) {
+                it.write("-")
+            }
+            for (j in 0 until max(lenDivLhv, "-$subtrahend".length) - "$modulo".length) {
+                indent += " "
+            }
             counter++
             it.newLine()
         }
