@@ -187,12 +187,16 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     if (Regex("""[^-+% \d]""").containsMatchIn(jumps)) return -1
     val searchMaxJump = mutableListOf<String>()
-    searchMaxJump.addAll(Regex("""-|%|\+|\d+""").findAll(jumps).map { it.value.trim() })
+    searchMaxJump.addAll(Regex("""\s+""").split(jumps).map { it.trim() })
     var maxJump = -1
     for (i in 0 until searchMaxJump.size - 1) {
-        if (searchMaxJump[i + 1] == "+") {
-            if (searchMaxJump[i].toIntOrNull() != null && searchMaxJump[i].toInt() > maxJump) {
-                maxJump = searchMaxJump[i].toInt()
+        if (Regex("""[\d]""").containsMatchIn(searchMaxJump[i]) && searchMaxJump[i].toIntOrNull() == null) {
+            return -1
+        } else {
+            if (searchMaxJump[i + 1] == "+") {
+                if (searchMaxJump[i].toIntOrNull() != null && searchMaxJump[i].toInt() > maxJump) {
+                    maxJump = searchMaxJump[i].toInt()
+                }
             }
         }
     }
