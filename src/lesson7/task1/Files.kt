@@ -88,6 +88,11 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  */
 fun sibilants(inputName: String, outputName: String) {
     val exceptions = listOf("жюри", "брошюра", "парашют")
+    val exceptionsWithMistakes = listOf("жури", "брошура", "парашут")
+    val exceptionsMistakes = mapOf(
+        'у' to 'ю',
+        'У' to 'Ю'
+    )
     val letters = listOf('ж', 'ч', 'ш', 'щ', 'Ж', 'Ч', 'Ш', 'Щ')
     var check: Boolean
     var word: String
@@ -103,9 +108,18 @@ fun sibilants(inputName: String, outputName: String) {
         for (line in File(inputName).readLines()) {
             val splitLine = line.split(" ")
             for (i in 0 until splitLine.size) {
-                if (splitLine[i] !in exceptions) {
+                word = splitLine[i]
+                if (word in exceptionsWithMistakes) {
+                    for (j in 0 until word.length - 1) {
+                        if (word[j] in letters && word[j + 1] in exceptionsMistakes.keys) {
+                            word = word.replace(
+                                word[j] + word[j + 1].toString(),
+                                word[j] + exceptionsMistakes[word[j + 1]].toString()
+                            )
+                        }
+                    }
+                } else if (word !in exceptions) {
                     check = true
-                    word = splitLine[i]
                     for (j in 0 until word.length - 1) {
                         if (word[j] in letters && word[j + 1] in mistakes.keys) {
                             word = word.replace(
