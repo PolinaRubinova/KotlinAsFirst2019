@@ -2,7 +2,6 @@
 
 package lesson8.task1
 
-import javafx.fxml.Initializable
 import lesson1.task1.sqr
 import java.lang.Math.atan
 import kotlin.math.*
