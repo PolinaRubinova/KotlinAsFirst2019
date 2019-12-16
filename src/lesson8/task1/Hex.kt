@@ -3,8 +3,6 @@
 package lesson8.task1
 
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Точка (гекс) на шестиугольной сетке.

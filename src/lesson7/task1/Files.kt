@@ -93,7 +93,7 @@ fun sibilants(inputName: String, outputName: String) {
         'у' to 'ю',
         'У' to 'Ю'
     )
-    val letters = listOf('ж', 'ч', 'ш', 'щ', 'Ж', 'Ч', 'Ш', 'Щ')
+    val letters = setOf('ж', 'ч', 'ш', 'щ', 'Ж', 'Ч', 'Ш', 'Щ')
     var check: Boolean
     var word: String
     val mistakes = mapOf(

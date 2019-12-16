@@ -7,7 +7,6 @@ package lesson8.task2
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
  * Горизонтали нумеруются снизу вверх, вертикали слева направо.
  */
-val numToStr = mapOf(1 to "a", 2 to "b", 3 to "c", 4 to "d", 5 to "e", 6 to "f", 7 to "g", 8 to "h")
 
 data class Square(val column: Int, val row: Int) {
     /**
@@ -25,7 +24,7 @@ data class Square(val column: Int, val row: Int) {
      * Для клетки не в пределах доски вернуть пустую строку
      */
     fun notation(): String = if (!inside()) ""
-    else numToStr[column] + row.toString()
+    else ('a' + column - 1).toString() + row.toString()
 }
 
 /**
@@ -159,7 +158,45 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> = TODO() /*{
+    println(start)
+    println(end)
+    val result = mutableListOf(start)
+    if (start == end) return result
+    var count = start
+    loop@ while (count != end) {
+        when {
+            count.column == end.column -> {
+                for (i in count.column + 1..end.column) {
+                    result.add(Square(i, count.row))
+                }
+                break@loop
+            }
+            count.row == end.row -> {
+                for (i in count.row + 1..end.row) {
+                    result.add(Square(count.column, i))
+                }
+                break@loop
+            }
+            (end.column > count.column && end.row > count.row) -> {
+                count = Square(count.column + 1, count.row + 1)
+            }
+            (end.column < count.column && end.row < count.row) -> {
+                count = Square(count.column - 1, count.row - 1)
+            }
+
+            (end.column > count.column && end.row < count.row) -> {
+                count = Square(count.column + 1, count.row - 1)
+            }
+            (end.column < count.column && end.row > count.row) -> {
+                count = Square(count.column - 1, count.row + 1)
+            }
+        }
+        result.add(Square(count.column, count.row))
+    }
+    return result
+}
+*/
 
 /**
  * Сложная

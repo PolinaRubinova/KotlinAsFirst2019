@@ -184,18 +184,21 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int {
+
+fun bestHighJump(jumps: String): Int { //наконец поняла суть задания))
     if (Regex("""[^-+% \d]""").containsMatchIn(jumps)) return -1
     val searchMaxJump = mutableListOf<String>()
     searchMaxJump.addAll(Regex("""\s+""").split(jumps).map { it.trim() })
     var maxJump = -1
-    for (i in 0 until searchMaxJump.size - 1) {
-        if (Regex("""[\d]""").containsMatchIn(searchMaxJump[i]) && searchMaxJump[i].toIntOrNull() == null) {
+    for (i in 0 until searchMaxJump.size) {
+        if (i % 2 == 0 && Regex("""[^\d]""").containsMatchIn(searchMaxJump[i])) {
             return -1
-        } else {
-            if (searchMaxJump[i + 1] == "+") {
-                if (searchMaxJump[i].toIntOrNull() != null && searchMaxJump[i].toInt() > maxJump) {
-                    maxJump = searchMaxJump[i].toInt()
+        } else if (i % 2 == 1) {
+            if (Regex("""[^-+%]""").containsMatchIn(searchMaxJump[i])) {
+                return -1
+            } else if ('+' in searchMaxJump[i]) {
+                if ((searchMaxJump[i - 1].toIntOrNull() ?: return -1) > maxJump) {
+                    maxJump = searchMaxJump[i - 1].toInt()
                 }
             }
         }
