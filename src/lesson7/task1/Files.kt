@@ -86,6 +86,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
+
 fun sibilants(inputName: String, outputName: String) {
     val exceptions = listOf("жюри", "брошюра", "парашют")
     val exceptionsWithMistakes = listOf("жури", "брошура", "парашут")
@@ -109,17 +110,24 @@ fun sibilants(inputName: String, outputName: String) {
             val splitLine = line.split(" ")
             for (i in 0 until splitLine.size) {
                 word = splitLine[i]
-                if (word in exceptionsWithMistakes) {
+                check = true
+                if (Regex("""[^абвгдеёжзийклмнопрстуфхцчшщъыьэюя]""").replace(word.toLowerCase(), "")
+                    in exceptionsWithMistakes
+                ) {
                     for (j in 0 until word.length - 1) {
                         if (word[j] in letters && word[j + 1] in exceptionsMistakes.keys) {
                             word = word.replace(
                                 word[j] + word[j + 1].toString(),
                                 word[j] + exceptionsMistakes[word[j + 1]].toString()
                             )
+                            check = false
                         }
                     }
-                } else if (word !in exceptions) {
-                    check = true
+                } else if (Regex("""[^абвгдеёжзийклмнопрстуфхцчшщъыьэюя]""").replace(
+                        word.toLowerCase(),
+                        ""
+                    ) !in exceptions
+                ) {
                     for (j in 0 until word.length - 1) {
                         if (word[j] in letters && word[j + 1] in mistakes.keys) {
                             word = word.replace(
@@ -129,11 +137,11 @@ fun sibilants(inputName: String, outputName: String) {
                             check = false
                         }
                     }
-                    if (check) {
-                        it.write(splitLine[i])
-                    } else {
-                        it.write(word)
-                    }
+                }
+                if (check) {
+                    it.write(splitLine[i])
+                } else {
+                    it.write(word)
                 }
                 if (i != splitLine.size - 1) it.write(" ")
             }
